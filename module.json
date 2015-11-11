@@ -8,6 +8,10 @@
     "sdk"
   ],
   "author": "",
+  "repository": {
+    "url": "git@github.com:ARMmbed/nrf51-sdk.git",
+    "type": "git"
+  },
   "license": "nordic",
   "targetDependencies": {
     "mbed-classic": {
