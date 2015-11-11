@@ -1,0 +1,41 @@
+{
+  "name": "nrf51-sdk",
+  "version": "0.0.0",
+  "description": "Module to contain files provided by the nordic nRF51 SDK",
+  "keywords": [
+    "nordic",
+    "nrf51",
+    "sdk"
+  ],
+  "author": "",
+  "license": "nordic",
+  "targetDependencies": {
+    "mbed-classic": {
+      "mbed-classic": "~0.0.1"
+    },
+    "mbed-os": {
+      "mbed-drivers": "*"
+    }
+  },
+  "extraIncludes": [
+    "source/nordic_sdk/components",
+    "source/nordic_sdk/components/libraries/util",
+    "source/nordic_sdk/components/libraries/hci",
+    "source/nordic_sdk/components/libraries/bootloader_dfu",
+    "source/nordic_sdk/components/libraries/bootloader_dfu/hci_transport",
+    "source/nordic_sdk/components/libraries/bootloader_dfu/experimental",
+    "source/nordic_sdk/components/libraries/scheduler",
+    "source/nordic_sdk/components/libraries/crc16",
+    "source/nordic_sdk/components/softdevice/s130/include",
+    "source/nordic_sdk/components/softdevice/common/softdevice_handler",
+    "source/nordic_sdk/components/drivers_nrf/hal",
+    "source/nordic_sdk/components/drivers_nrf/ble_flash",
+    "source/nordic_sdk/components/drivers_nrf/pstorage",
+    "source/nordic_sdk/components/drivers_nrf/pstorage/config",
+    "source/nordic_sdk/components/ble/ble_radio_notification",
+    "source/nordic_sdk/components/ble/ble_services/ble_dfu",
+    "source/nordic_sdk/components/ble/common",
+    "source/nordic_sdk/components/ble/device_manager",
+    "source/nordic_sdk/components/ble/device_manager/config"
+  ]
+}
