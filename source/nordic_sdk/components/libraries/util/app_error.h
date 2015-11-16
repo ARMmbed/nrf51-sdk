@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2013 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
  
@@ -46,10 +26,6 @@
 #include <stdbool.h>
 #include "nrf_error.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**@brief Function for error handling, which is called when an error has occurred. 
  *
  * @param[in] error_code  Error code supplied to the handler.
@@ -57,10 +33,6 @@ extern "C" {
  * @param[in] p_file_name Pointer to the file name. 
  */
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name);
-
-#ifdef __cplusplus
-}
-#endif
 
 /**@brief Macro for calling error handler function. 
  *

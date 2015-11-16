@@ -1,33 +1,14 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is confidential property of Nordic 
+ * Semiconductor ASA.Terms and conditions of usage are described in detail 
+ * in NORDIC SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT. 
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
+ *              
+ * $LastChangedRevision: 13999 $
  */
 
 /**
@@ -44,25 +25,25 @@
  * @ingroup nrf_drivers
  * @brief Driver for the nRF51 AES Electronic Code Book (ECB) peripheral.
  *
- * In order to encrypt and decrypt data the peripheral must be powered on
- * using nrf_ecb_init() and then the key set using nrf_ecb_set_key.
+ * To encrypt and decrypt data, the peripheral must first be powered on
+ * using @ref nrf_ecb_init. Next, the key must be set using @ref nrf_ecb_set_key.
  */
 
 #include <stdint.h>
 
 /**
- * Initialize and power on the ECB peripheral.
+ * @brief Function for initializing and powering on the ECB peripheral.
  *
- * Allocates memory for the ECBDATAPTR.
- * @retval true Initialization was successful.
- * @retval false Powering up failed.
+ * This function allocates memory for the ECBDATAPTR.
+ * @retval true If initialization was successful.
+ * @retval false If powering on failed.
  */
 bool nrf_ecb_init(void);
 
 /**
- * Encrypt/decrypt 16-byte data using current key.
+ * @brief Function for encrypting and decrypting 16-byte data using current key.
  *
- * The function avoids unnecessary copying of data if the point to the 
+ * This function avoids unnecessary copying of data if the parameters point to the 
  * correct locations in the ECB data structure.
  *
  * @param dst Result of encryption/decryption. 16 bytes will be written. 
@@ -74,9 +55,9 @@ bool nrf_ecb_init(void);
 bool nrf_ecb_crypt(uint8_t * dst, const uint8_t * src);
 
 /**
- * Set the key to be used for encryption/decryption.
+ * @brief Function for setting the key to be used for encryption and decryption.
  *
- * @param key Pointer to key. 16 bytes will be read.
+ * @param key Pointer to the key. 16 bytes will be read.
  */
 void nrf_ecb_set_key(const uint8_t * key);
 

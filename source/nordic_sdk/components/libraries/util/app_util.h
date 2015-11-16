@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -71,7 +51,7 @@ enum
 #if defined(__GNUC__)
 #define STATIC_ASSERT(EXPR) typedef char __attribute__((unused)) static_assert_failed[(EXPR) ? 1 : -1]
 #elif defined(__ICCARM__)
-#define STATIC_ASSERT(EXPR) extern char static_assert_failed[(EXPR) ? 1 : -1]
+#define STATIC_ASSERT(EXPR) extern char static_assert_failed[(EXPR) ? 1 : -1] 
 #else
 #define STATIC_ASSERT(EXPR) typedef char static_assert_failed[(EXPR) ? 1 : -1]
 #endif
@@ -89,7 +69,7 @@ typedef struct
     uint16_t  size;                 /**< Number of array entries. */
     uint8_t * p_data;               /**< Pointer to array entries. */
 } uint8_array_t;
-
+    
 /**@brief Perform rounded integer division (as opposed to truncating the result).
  *
  * @param[in]   A   Numerator.
@@ -143,7 +123,7 @@ static __INLINE uint8_t uint16_encode(uint16_t value, uint8_t * p_encoded_data)
     p_encoded_data[1] = (uint8_t) ((value & 0xFF00) >> 8);
     return sizeof(uint16_t);
 }
-
+    
 /**@brief Function for encoding a uint32 value.
  *
  * @param[in]   value            Value to be encoded.
@@ -168,7 +148,7 @@ static __INLINE uint8_t uint32_encode(uint32_t value, uint8_t * p_encoded_data)
  */
 static __INLINE uint16_t uint16_decode(const uint8_t * p_encoded_data)
 {
-        return ( (((uint16_t)((uint8_t *)p_encoded_data)[0])) |
+        return ( (((uint16_t)((uint8_t *)p_encoded_data)[0])) | 
                  (((uint16_t)((uint8_t *)p_encoded_data)[1]) << 8 ));
 }
 
@@ -185,7 +165,7 @@ static __INLINE uint32_t uint32_decode(const uint8_t * p_encoded_data)
              (((uint32_t)((uint8_t *)p_encoded_data)[2]) << 16) |
              (((uint32_t)((uint8_t *)p_encoded_data)[3]) << 24 ));
 }
-
+    
 /** @brief Function for converting the input voltage (in milli volts) into percentage of 3.0 Volts.
  *
  *  @details The calculation is based on a linearized version of the battery's discharge

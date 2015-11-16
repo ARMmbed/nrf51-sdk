@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2013 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -46,10 +26,6 @@
 #define PSTORAGE_H__
 
 #include "pstorage_platform.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* #ifdef __cplusplus */
 
 
 /**@defgroup ps_opcode Persistent Storage Access Operation Codes
@@ -315,90 +291,8 @@ uint32_t pstorage_clear(pstorage_handle_t * p_base_id, pstorage_size_t size);
  */
 uint32_t pstorage_access_status_get(uint32_t * p_count);
 
-#ifdef PSTORAGE_RAW_MODE_ENABLE
-
-/**@brief      Function for registering with persistent storage interface.
- *
- * @param[in]  p_module_param Module registration param.
- * @param[out] p_block_id     Block identifier to identify persistent memory blocks in case 
- *                            registration succeeds. Application is expected to use the block ids 
- *                            for subsequent operations on requested persistent memory.
- *             In case more than one memory blocks are requested, the identifier provided here is
- *             the base identifier for the first block and to identify subsequent block,
- *             application shall use \@ref pstorage_block_identifier_get with this base identifier
- *             and block number. Therefore if 10 blocks of size 64 are requested and application
- *             wishes to store memory in 6th block, it shall use
- *             \@ref pstorage_block_identifier_get with based id and provide a block number of 5.
- *             This way application is only expected to remember the base block identifier.
- *
- * @retval     NRF_SUCCESS             on success, else an error code indicating reason for failure.
- * @retval     NRF_ERROR_INVALID_STATE is returned is API is called without module initialization.
- * @retval     NRF_ERROR_NULL          if NULL parameter has been passed.
- * @retval     NRF_ERROR_INVALID_PARAM if invalid parameters are passed to the API.
- * @retval     NRF_ERROR_NO_MEM        in case no more registrations can be supported.
- */
-uint32_t pstorage_raw_register(pstorage_module_param_t * p_module_param,
-                               pstorage_handle_t *       p_block_id);
-
-/**@brief     Raw mode function for persistently storing data of length 'size' contained in 'p_src'
- *            address in storage module at 'p_dest' address; Equivalent to Storage Write.
- *
- * @param[in]  p_dest Destination address where data is to be stored persistently.
- * @param[in]  p_src  Source address containing data to be stored. API assumes this to be resident
- *                    memory and no intermediate copy of data is made by the API.
- * @param[in]  size   Size of data to be stored expressed in bytes. Should be word aligned.
- * @param[in]  offset Offset in bytes to be applied when writing to the block.
- *                    For example, if within a block of 100 bytes, application wishes to
- *                    write 20 bytes at offset of 12, then this field should be set to 12.
- *                    Should be word aligned.
- *
- * @retval     NRF_SUCCESS             on success, else an error code indicating reason for failure.
- * @retval     NRF_ERROR_INVALID_STATE is returned is API is called without module initialization.
- * @retval     NRF_ERROR_NULL          if NULL parameter has been passed.
- * @retval     NRF_ERROR_INVALID_PARAM if invalid parameters are passed to the API.
- * @retval     NRF_ERROR_INVALID_ADDR  in case data address 'p_src' is not aligned.
- * @retval     NRF_ERROR_NO_MEM        in case request cannot be processed.
- *
- * @warning    No copy of the data is made, and hence memory provided for data source to be written
- *             to flash cannot be freed or reused by the application until this procedure
- *             is complete. End of this procedure is notified to the application using the
- *             notification callback registered by the application.
- */
-uint32_t pstorage_raw_store(pstorage_handle_t * p_dest,
-                            uint8_t *           p_src,
-                            pstorage_size_t     size,
-                            pstorage_size_t     offset);
-
-/**@brief      Function for clearing data in persistent memory in raw mode.
- *
- * @param[in]  p_dest Base block identifier in persistent memory that needs to cleared;
- *                    Equivalent to an Erase Operation.
- * @param[in]  size   Size of data to be cleared from persistent memory expressed in bytes.
- *                    This is currently unused. And a clear would mean clearing all blocks,
- *                    however, this parameter is to provision for clearing of certain blocks
- *                    of memory only and not all if need be.
- *
- * @retval     NRF_SUCCESS             on success, else an error code indicating reason for failure.
- * @retval     NRF_ERROR_INVALID_STATE is returned is API is called without module initialization.
- * @retval     NRF_ERROR_NULL          if NULL parameter has been passed.
- * @retval     NRF_ERROR_INVALID_PARAM if invalid parameters are passed to the API.
- * @retval     NRF_ERROR_NO_MEM        in case request cannot be processed.
- *
- * @note       Clear operations may take time. This API however, does not block until the clear
- *             procedure is complete. Application is notified of procedure completion using
- *             notification callback registered by the application. 'result' parameter of the
- *             callback suggests if the procedure was successful or not.
- */
-uint32_t pstorage_raw_clear(pstorage_handle_t * p_dest, pstorage_size_t size);
-
-#endif // PSTORAGE_RAW_MODE_ENABLE
-
 /**@} */
 /**@} */
-
-#ifdef __cplusplus
-}
-#endif /* #ifdef __cplusplus */
 
 #endif // PSTORAGE_H__
 

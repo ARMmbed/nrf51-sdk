@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2014 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -44,6 +24,7 @@
 #include "compiler_abstraction.h"
 #include "nordic_common.h"
 #ifdef DEBUG
+#include "bsp.h"
 
 /* global error variables - in order to prevent removal by optimizers */
 uint32_t m_error_code;
@@ -71,7 +52,7 @@ __WEAK void app_error_handler(uint32_t error_code, uint32_t line_num, const uint
 #ifndef DEBUG
     NVIC_SystemReset();
 #else
-    
+
 #ifdef BSP_DEFINES_ONLY 
     LEDS_ON(LEDS_MASK);
 #else
@@ -86,6 +67,11 @@ __WEAK void app_error_handler(uint32_t error_code, uint32_t line_num, const uint
     //ble_debug_assert_handler(error_code, line_num, p_file_name);
 #endif // BSP_DEFINES_ONLY
 
+    // The following variable helps Keil keep the call stack visible, in addition, it can be set to
+    // 0 in the debugger to continue executing code after the error check.
+    volatile bool loop = true;
+    UNUSED_VARIABLE(loop);
+
     m_error_code = error_code;
     m_line_num = line_num;
     m_p_file_name = p_file_name;
@@ -94,7 +80,8 @@ __WEAK void app_error_handler(uint32_t error_code, uint32_t line_num, const uint
     UNUSED_VARIABLE(m_line_num);
     UNUSED_VARIABLE(m_p_file_name);
     __disable_irq();
-    while(1) ;
+
+    while(loop);
 #endif // DEBUG
 }
 /*lint -restore */

@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2014 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
   
@@ -66,7 +46,7 @@
 /**@brief The SVC numbers used by the SVC functions in the SoC library. */
 enum BOOTLOADER_SVCS
 {
-    DFU_BLE_SVC_SET_PEER_DATA = BOOTLOADER_SVC_BASE,    /**< SVC number for the setting of peer data call. */
+    DFU_BLE_SVC_PEER_DATA_SET = BOOTLOADER_SVC_BASE,    /**< SVC number for the setting of peer data call. */
     BOOTLOADER_SVC_LAST
 };
 
@@ -74,7 +54,7 @@ enum BOOTLOADER_SVCS
  *
  * @details This structure contains peer data needed for connection to a bonded device during DFU.
  *          The peer data must be provided by the application to the bootloader during buttonless
- *          update. See @ref dfu_ble_svc_set_peer_data. It contains bond information about the
+ *          update. See @ref dfu_ble_svc_peer_data_set. It contains bond information about the
  *          desired DFU peer.
  */
 typedef struct
@@ -93,7 +73,7 @@ typedef struct
  * @retval NRF_ERROR_NULL If a NULL pointer was provided as argument.
  * @retval NRF_SUCCESS    If the function completed successfully.
  */
-SVCALL(DFU_BLE_SVC_SET_PEER_DATA, uint32_t, dfu_ble_svc_set_peer_data(dfu_ble_peer_data_t * p_peer_data));
+SVCALL(DFU_BLE_SVC_PEER_DATA_SET, uint32_t, dfu_ble_svc_peer_data_set(dfu_ble_peer_data_t * p_peer_data));
 
 #endif // DFU_BLE_SVC_H__
 

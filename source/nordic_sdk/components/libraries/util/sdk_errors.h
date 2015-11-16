@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2013 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -77,19 +57,31 @@
  * @{
  */
 #define DEVICE_MANAGER_ERR_BASE   (0x8000)
+#define MEMORY_MANAGER_ERR_BASE   (0x8100)
 /* @} */
+
+
+/**
+ * @defgroup sdk_iot_errors Codes reserved as identification for IoT errors.
+ * @{
+ */
+#define IOT_ERR_BASE_START        (0xA000)
+#define IOT_ERR_BASE_STOP         (0xAFFF)
+/* @} */
+ 
 
 /**
  * @defgroup sdk_common_errors Codes reserved as identification for common errors.
  * @{
  */
-#define MODULE_NOT_INITIALZED      (SDK_COMMON_ERROR_BASE+0x0000)
-#define MUTEX_INIT_FAILED          (SDK_COMMON_ERROR_BASE+0x0001)
-#define MUTEX_LOCK_FAILED          (SDK_COMMON_ERROR_BASE+0x0002)
-#define MUTEX_UNLOCK_FAILED        (SDK_COMMON_ERROR_BASE+0x0003)
-#define MUTEX_COND_INIT_FAILED     (SDK_COMMON_ERROR_BASE+0x0004)
-#define API_NOT_IMPLEMENTED        (SDK_COMMON_ERROR_BASE+0x0010)
-#define FEATURE_NOT_ENABLED        (SDK_COMMON_ERROR_BASE+0x0011)
+#define MODULE_NOT_INITIALZED      (SDK_COMMON_ERROR_BASE + 0x0000)
+#define MUTEX_INIT_FAILED          (SDK_COMMON_ERROR_BASE + 0x0001)
+#define MUTEX_LOCK_FAILED          (SDK_COMMON_ERROR_BASE + 0x0002)
+#define MUTEX_UNLOCK_FAILED        (SDK_COMMON_ERROR_BASE + 0x0003)
+#define MUTEX_COND_INIT_FAILED     (SDK_COMMON_ERROR_BASE + 0x0004)
+#define MODULE_ALREADY_INITIALIZED (SDK_COMMON_ERROR_BASE + 0x0005)
+#define API_NOT_IMPLEMENTED        (SDK_COMMON_ERROR_BASE + 0x0010)
+#define FEATURE_NOT_ENABLED        (SDK_COMMON_ERROR_BASE + 0x0011)
 /* @} */
 
 
@@ -97,10 +89,10 @@
  * @defgroup dm_specific_errors Error / status codes specific to device manager.
  * @{
  */
-#define DM_NO_APP_CONTEXT                (DEVICE_MANAGER_ERR_BASE+0x0040)
-#define DM_SERVICE_CONTEXT_NOT_APPLIED   (DEVICE_MANAGER_ERR_BASE+0x0041)
-#define DM_CONTEXT_INFO_LOST             (DEVICE_MANAGER_ERR_BASE+0x0042)
-#define DM_DEVICE_CONTEXT_FULL           (DEVICE_MANAGER_ERR_BASE+0x0043)
+#define DM_NO_APP_CONTEXT                (DEVICE_MANAGER_ERR_BASE + 0x0040)
+#define DM_SERVICE_CONTEXT_NOT_APPLIED   (DEVICE_MANAGER_ERR_BASE + 0x0041)
+#define DM_CONTEXT_INFO_LOST             (DEVICE_MANAGER_ERR_BASE + 0x0042)
+#define DM_DEVICE_CONTEXT_FULL           (DEVICE_MANAGER_ERR_BASE + 0x0043)
 /* @} */
 
 /**

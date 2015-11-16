@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2013 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -60,10 +40,6 @@
 #include "ble_stack_handler_types.h"
 #include "ant_stack_handler_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif // #ifdef __cplusplus
-
 #define SOFTDEVICE_SCHED_EVT_SIZE       0                                                 /**< Size of button events being passed through the scheduler (is to be used for computing the maximum size of scheduler events). For SoftDevice events, this size is 0, since the events are being pulled in the event handler. */
 #define SYS_EVT_MSG_BUF_SIZE            sizeof(uint32_t)                                  /**< Size of System (SOC) event message buffer. */
 
@@ -89,7 +65,8 @@ typedef void (*sys_evt_handler_t) (uint32_t evt_id);
  *            reinitialization).
  */
 /*lint -emacro(506, SOFTDEVICE_HANDLER_INIT) */ /* Suppress "Constant value Boolean */
-#define SOFTDEVICE_HANDLER_INIT(CLOCK_SOURCE, EVT_HANDLER)                                         \
+#define SOFTDEVICE_HANDLER_INIT(CLOCK_SOURCE,                                                      \
+                                EVT_HANDLER)                                                     \
     do                                                                                             \
     {                                                                                              \
         static uint32_t BLE_EVT_BUFFER[CEIL_DIV(BLE_STACK_EVT_MSG_BUF_SIZE, sizeof(uint32_t))];    \
@@ -97,7 +74,7 @@ typedef void (*sys_evt_handler_t) (uint32_t evt_id);
         ERR_CODE = softdevice_handler_init((CLOCK_SOURCE),                                         \
                                            BLE_EVT_BUFFER,                                         \
                                            sizeof(BLE_EVT_BUFFER),                                 \
-                                           EVT_HANDLER);                                           \
+                                           EVT_HANDLER);      \
         APP_ERROR_CHECK(ERR_CODE);                                                                 \
     } while (0)
 
@@ -116,7 +93,7 @@ typedef void (*sys_evt_handler_t) (uint32_t evt_id);
  *                                 used, this buffer must be provided by the application. The
  *                                 buffer must be large enough to hold the biggest stack event the
  *                                 application is supposed to handle. The buffer must be aligned to
- *                                 a 4 byte boundary. This parameter is unused if BLE stack support
+ *                                 a 4 byte boundary. This parameter is unused if BLE stack support 
  *                                 is not required.
  * @param[in]  ble_evt_buffer_size Size of SoftDevice BLE event buffer. This parameter is unused if
  *                                 BLE stack support is not required.
@@ -166,10 +143,6 @@ void intern_softdevice_events_execute(void);
 
 
 /**@endcond */
-
-#ifdef __cplusplus
-}
-#endif // #ifdef __cplusplus
 
 #endif // SOFTDEVICE_HANDLER_H__
 
