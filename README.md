@@ -33,4 +33,16 @@ A list of files currently requierd by mbed is maintained in [script/required_fil
 python pick_nrf51_files.py <full-noridc-sdk-path> <nrf51-sdk-yotta-module-path>
 ```
 
+There are files in the sdk with the same filename but in different folder. This is dealt with by excluding certain directories. The excluded directories are listed in [pick_nrf51_files.py](https://github.com/ARMmbed/nrf51-sdk/blob/master/script/pick_nrf51_files.py).
 
+After running the script, the changes in [the previous section](#changes-made-to-nordic-files) will have to be applied manually again.
+
+Folder structure or even file name can change between releases of the nordic sdk, hence a degree of manual adjustment is needed when porting.
+
+### Using Noridc Headers
+The nordic sdk is written in C and yotta modules support C++. If you are trying to include Nordic files in a cpp program, you need to use the `extern "C"` keyword around the includes.
+```c
+extern "C" {
+#include "softdevice_handler.h"
+}
+```
