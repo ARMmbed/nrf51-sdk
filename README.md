@@ -1,7 +1,5 @@
 # nrf51-sdk
-Module to contain files provided by the nordic nRF51 SDK
-
-The latest version of this module uses files from Nordic SDK 8.1.0. The files are extracted from: https://developer.nordicsemi.com/nRF51_SDK/nRF51_SDK_v8.x.x/nRF51_SDK_8.1.0_b6ed55f.zip
+Module to contain files provided by the nordic nRF51 SDK. The latest version of this module uses files from Nordic SDK 8.1.0. The files are extracted from [here]. (https://developer.nordicsemi.com/nRF51_SDK/nRF51_SDK_v8.x.x/nRF51_SDK_8.1.0_b6ed55f.zip)
 
 ## Changes made to Nordic files
 The files are kept the same as much as possible to the Nordic SDK. These minor modifications are made in order to integrate with mbed:
@@ -39,7 +37,7 @@ After running the script, the changes in [the previous section](#changes-made-to
 
 Folder structure or even file name can change between releases of the nordic sdk, hence a degree of manual adjustment is needed when porting.
 
-### Using Noridc Headers
+## Using Noridc Headers
 The nordic sdk is written in C and yotta modules support C++. If you are trying to include Nordic files in a cpp program, you need to use the `extern "C"` keyword around the includes.
 ```c
 extern "C" {
