@@ -99,7 +99,7 @@
 	source/nordic-sdk/components/softdevice/s130/include/nrf_soc.h
 	source/nordic-sdk/components/softdevice/s130/include/nrf_svc.h
 	source/nordic-sdk/components/softdevice/s130/include/softdevice_assert.h
-
+	source/nordic-sdk/components/drivers_nrf/hal/nrf_wdt.h
 
 # from mbed-hal-nrf51822-mcu
 	mbed-hal-nrf51822-mcu/lib/nordic_sdk/components/libraries/crc16/crc16.h
