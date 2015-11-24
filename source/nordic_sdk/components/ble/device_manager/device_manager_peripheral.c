@@ -31,7 +31,6 @@
  */
 
 #include "device_manager.h"
-#include "app_trace.h"
 #include "pstorage.h"
 #include "ble_hci.h"
 #include "app_error.h"
@@ -162,7 +161,7 @@ typedef enum
  * @note That if ENABLE_DEBUG_LOG_SUPPORT is disabled, having DM_DISABLE_LOGS has no effect.
  * @{
  */
-#define nDM_DISABLE_LOGS        /**< Enable this macro to disable any logs from this module. */
+#define DM_DISABLE_LOGS        /**< Enable this macro to disable any logs from this module. */
 
 #ifndef DM_DISABLE_LOGS
 #define DM_LOG  app_trace_log  /**< Used for logging details. */
