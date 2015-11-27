@@ -42,7 +42,6 @@
     "source/nordic_sdk/components/libraries/util",
     "source/nordic_sdk/components/softdevice/common/softdevice_handler",
     "source/nordic_sdk/components/softdevice/s130/headers",
-    "source/nordic_sdk/components/toolchain",
-    "source/nordic_sdk/components/toolchain/gcc"
+    "source/nordic_sdk/components/toolchain"
   ]
 }
