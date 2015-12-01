@@ -55,6 +55,10 @@ static bool is_disabled_in_debug_needed(void);
     uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK;
 #endif
 
+#ifndef YOTTA_CFG_HARDWARE_CLOCKS_NRF_LFCLK_SRC
+#   define YOTTA_CFG_HARDWARE_CLOCKS_NRF_LFCLK_SRC 1UL /* The default is to wait for LFLCK to start */
+#endif
+
 void SystemCoreClockUpdate(void)
 {
     SystemCoreClock = __SYSTEM_CLOCK;
@@ -82,6 +86,16 @@ void SystemInit(void)
     if (is_disabled_in_debug_needed())
     {
         NRF_MPU->DISABLEINDEBUG = MPU_DISABLEINDEBUG_DISABLEINDEBUG_Disabled << MPU_DISABLEINDEBUG_DISABLEINDEBUG_Pos;
+    }
+
+    // Start the external 32khz crystal oscillator.
+    NRF_CLOCK->LFCLKSRC             = (YOTTA_CFG_HARDWARE_CLOCKS_NRF_LFCLK_SRC << CLOCK_LFCLKSRC_SRC_Pos);
+    NRF_CLOCK->EVENTS_LFCLKSTARTED  = 0;
+    NRF_CLOCK->TASKS_LFCLKSTART     = 1;
+
+    // Wait for the external oscillator to start up.
+    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0) {
+        // Do nothing.
     }
 }
 

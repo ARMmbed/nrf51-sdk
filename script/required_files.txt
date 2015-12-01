@@ -110,8 +110,3 @@
 # included from ble_conn_params.c
 	app_timer.h
 
-# included from device_manager_peripheral.c
-	app_trace.h
-
-# included from nrf51.h
-	core_cm0.h
