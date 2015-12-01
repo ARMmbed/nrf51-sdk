@@ -16,8 +16,7 @@
 	source/nordic-sdk/components/ble/common/ble_advdata.h
 	source/nordic-sdk/components/ble/common/ble_advdata_parser.c
 	source/nordic-sdk/components/ble/common/ble_advdata_parser.h
-# source/nordic-sdk/components/ble/common/ble_conn_params.cpp the file is called
-	source/nordic-sdk/components/ble/common/ble_conn_params.c
+# source/nordic-sdk/components/ble/common/ble_conn_params.cpp the file is being renamed from source/nordic-sdk/components/ble/common/ble_conn_params.c
 	source/nordic-sdk/components/ble/common/ble_conn_params.h
 	source/nordic-sdk/components/ble/common/ble_date_time.h
 	source/nordic-sdk/components/ble/common/ble_sensor_location.h
@@ -110,3 +109,5 @@
 # included from ble_conn_params.c
 	app_timer.h
 
+# all files in drivers_nrf folder
+	D components/drivers_nrf
