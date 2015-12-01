@@ -3,25 +3,61 @@
 import os, shutil, json, pprint, sys
 from collections import OrderedDict
 
-help_text = "Usage: python {} <full-noridc-sdk-path> <nrf51-sdk-yotta-module-path>".format(os.path.basename(__file__))
+help_text = """
+Usage: python {} [options] <full-noridc-sdk-path> <nrf51-sdk-yotta-module-path>
+options: --purge   : to delete all existing files and start again
+         --dry-run : to list the files to be copied but not actually copy them
+""".format(os.path.basename(__file__))
 
 # exclude path to avoid confusion over files of the same name
 exclude_path = ["examples", "SVD", "s110", "s120", "s210", "nrf_soc_nosd", "serialization/connectivity",
                 'components/libraries/hci/config', 'components/libraries/bootloader_dfu/ble_transport']
 
+def find(name, path):
+    paths = []
+    for root, dirs, files in os.walk(path):
+        if True not in [x in root for x in exclude_path]:
+            if name in files:
+                paths.append(os.path.join(root, name))
+
+    if len(paths) == 0:
+        print "-"*30
+        print "Warning! No {} found!!!!".format(name)
+        print "-"*30
+        return None
+    elif len(paths) > 1:
+        print "-"*30
+        print "Warning! More than one {} found!!!!".format(name)
+        print paths
+        print "-"*30
+        return None
+    else:
+        return paths[0]
+
+def find_dir(dir_name, path):
+    paths = []
+    for root, dirs, files in os.walk(path):
+        if dir_name in root:
+            for fn in files:
+                paths.append(os.path.join(root, fn))
+    return paths
+
 if __name__ == "__main__":
     # define source and destination of copy
     arg_valid = True
-    if len(sys.argv) != 3:
+    if len(sys.argv) not in [3, 4]:
         arg_valid = False
     else:
-        src_folder = sys.argv[1]
-        yt_module_dir = sys.argv[2]
+        src_folder = sys.argv[-2]
+        yt_module_dir = sys.argv[-1]
 
         for d in [src_folder, yt_module_dir]:
             if not os.path.isdir(d):
                 arg_valid = False
                 print src_folder, "is not a folder"
+
+    purge = ("--purge" in sys.argv)
+    dry_run = ("--dry-run" in sys.argv)
 
     if not arg_valid:
         print help_text
@@ -33,52 +69,36 @@ if __name__ == "__main__":
     file_list = []
     with open("required_files.txt", "r") as fd:
         for line in fd:
-            if not line.strip().startswith("#") and line.strip() != '':
-                file_list.append(os.path.basename(line).strip())
-
-    def find(name, path):
-        paths = []
-        for root, dirs, files in os.walk(path):
-            if True not in [x in root for x in exclude_path]:
-                if isinstance(name, list):
-                    for nm in [x for x in name if x in files]:
-                        paths.append(os.path.join(root, nm))
-                elif name in files:
-                    paths.append(os.path.join(root, name))
-
-        if len(paths) == 0:
-            print "-"*30
-            print "Warning! No {} found!!!!".format(name)
-            print "-"*30
-            return None
-        elif len(paths) > 1:
-            print "-"*30
-            print "Warning! More than one {} found!!!!".format(name)
-            print paths
-            print "-"*30
-            return None
-        else:
-            return paths[0]
+            line = line.strip()
+            if line.startswith("D "):
+                directory = line.split(" ")[-1]
+                file_list += find_dir(directory, src_folder)
+            elif not line.startswith("#") and line != '':
+                fn = os.path.basename(line).strip()
+                fn = find(fn, src_folder)
+                file_list.append(fn)
 
     # remove everything from the destination folder
-    if os.path.exists(dst_folder):
+    if purge and not dry_run and os.path.exists(dst_folder):
         shutil.rmtree(dst_folder)
 
-    # find files and copy them
+    # copy files
     extra_includes = []
-    for fn in file_list:
-        src = find(fn, src_folder)
+    for src in file_list:
         if src:
             rel_dst = os.path.relpath(src, src_folder)
             dst = os.path.join(dst_folder, rel_dst)
             print src, "->", dst
-            #print dst
+
             directory = os.path.dirname(dst)
             if not os.path.exists(directory):
-                os.makedirs(directory)
+                print "Creating directory:", directory
+                if not dry_run:
+                    os.makedirs(directory)
             if not os.path.isfile(dst):
-                pass
-                shutil.copyfile(src, dst)
+                print "Copying file", dst
+                if not dry_run:
+                    shutil.copyfile(src, dst)
 
             # build a list of extra includes to be added to module.json
             if dst.endswith(".h"):
@@ -95,11 +115,12 @@ if __name__ == "__main__":
     for n in sorted(extra_includes):
         print n
 
-    with open(mod_json, 'r+') as fd:
-        jobj = json.loads(fd.read(), object_pairs_hook=OrderedDict)
-        jobj['extraIncludes'] = sorted(extra_includes)
-        jdump = json.dumps(jobj, indent=2, separators=(',', ': '))
-        fd.seek(0)
-        fd.write(jdump)
-        fd.write("\n")
-        fd.truncate()
+    if not dry_run:
+        with open(mod_json, 'r+') as fd:
+            jobj = json.loads(fd.read(), object_pairs_hook=OrderedDict)
+            jobj['extraIncludes'] = sorted(extra_includes)
+            jdump = json.dumps(jobj, indent=2, separators=(',', ': '))
+            fd.seek(0)
+            fd.write(jdump)
+            fd.write("\n")
+            fd.truncate()

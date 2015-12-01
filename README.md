@@ -9,7 +9,9 @@ A list of files currently requierd by mbed is maintained in [script/required_fil
 
 ### Script usage
 ```
-python pick_nrf51_files.py <full-noridc-sdk-path> <nrf51-sdk-yotta-module-path>
+python pick_nrf51_files.py [options] <full-noridc-sdk-path> <nrf51-sdk-yotta-module-path>
+options: --purge   : to delete all existing files and start again
+         --dry-run : to list the files to be copied but not actually copy them
 ```
 
 There are files in the sdk with the same filename but in different folder. This is dealt with by excluding certain directories. The excluded directories are listed in [pick_nrf51_files.py](https://github.com/ARMmbed/nrf51-sdk/blob/master/script/pick_nrf51_files.py).
