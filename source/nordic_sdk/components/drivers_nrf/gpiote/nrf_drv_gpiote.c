@@ -10,6 +10,8 @@
  *
  */
 
+#if (GPIOTE_ENABLED == 1)
+
 #include "nrf_drv_gpiote.h"
 #include "nrf_drv_common.h"
 #include "nrf_drv_config.h"
@@ -520,3 +522,5 @@ void GPIOTE_IRQHandler(void)
     }
 }
 //lint -restore
+
+#endif
