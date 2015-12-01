@@ -45,6 +45,7 @@
     #if defined (NRF51)
         #include "nrf51.h"
         #include "nrf51_bitfields.h"
+        #include "nrf51_deprecated.h"
     #else
         #error "Device family must be defined. See nrf.h."
     #endif /* NRF51 */
