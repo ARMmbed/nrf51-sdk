@@ -43,6 +43,7 @@
 #elif defined (__GNUC__)
 #define SVCALL(number, return_type, signature) \
   _Pragma("GCC diagnostic ignored \"-Wunused-function\"") \
+  _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"") \
   _Pragma("GCC diagnostic push") \
   _Pragma("GCC diagnostic ignored \"-Wreturn-type\"") \
   __attribute__((naked)) static return_type signature \
