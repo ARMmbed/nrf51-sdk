@@ -1,22 +1,26 @@
-/*
+/* 
  * Copyright (c) Nordic Semiconductor ASA
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- *
+ * 
  *   1. Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- *
+ * 
  *   2. Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- *
+ * 
  *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
  *   contributors to this software may be used to endorse or promote products
  *   derived from this software without specific prior written permission.
- *
- *
+ * 
+ *   4. This software must only be used in a processor manufactured by Nordic
+ *   Semiconductor ASA, or in a processor manufactured by a third party that
+ *   is used in combination with a processor manufactured by Nordic Semiconductor.
+ * 
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -27,7 +31,7 @@
  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  */
 
 /**
@@ -547,9 +551,7 @@ typedef struct
 {
   ble_gap_addr_t        peer_addr;              /**< Bluetooth address of the peer device. */
   ble_gap_addr_t        own_addr;               /**< Bluetooth address of the local device used during connection setup. */
-#if !defined(TARGET_MCU_NRF51_16K_S110) && !defined(TARGET_MCU_NRF51_32K_S110)
   uint8_t               role;                   /**< BLE role for this connection, see @ref BLE_GAP_ROLES */
-#endif
   uint8_t               irk_match :1;           /**< If 1, peer device's address resolved using an IRK. */
   uint8_t               irk_match_idx  :7;      /**< Index in IRK list where the address was matched. */
   ble_gap_conn_params_t conn_params;            /**< GAP Connection Parameters. */

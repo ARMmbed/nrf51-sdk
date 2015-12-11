@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -53,28 +33,64 @@ enum
     UNIT_10_MS    = 10000                               /**< Number of microseconds in 10 milliseconds. */
 };
 
-/**@brief Macro for doing static (i.e. compile time) assertion.
- *
- * @note If the assertion fails when compiling using Keil, the compiler will report error message
- *       "error: #94: the size of an array must be greater than zero" (while gcc will list the
- *       symbol static_assert_failed, making the error message more readable).
- *       If the supplied expression can not be evaluated at compile time, Keil will report
- *       "error: #28: expression must have a constant value".
- *
- * @note The macro is intentionally implemented not using do while(0), allowing it to be used
- *       outside function blocks (e.g. close to global type- and variable declarations).
- *       If used in a code block, it must be used before any executable code in this block.
- *
- * @param[in]   EXPR   Constant expression to be verified.
- */
 
-#if defined(__GNUC__)
-#define STATIC_ASSERT(EXPR) typedef char __attribute__((unused)) static_assert_failed[(EXPR) ? 1 : -1]
-#elif defined(__ICCARM__)
-#define STATIC_ASSERT(EXPR) extern char static_assert_failed[(EXPR) ? 1 : -1] 
+/**@brief Implementation specific macro for delayed macro expansion used in string concatenation
+*
+* @param[in]   lhs   Left hand side in concatenation
+* @param[in]   rhs   Right hand side in concatenation
+*/
+#define STRING_CONCATENATE_IMPL(lhs, rhs) lhs ## rhs
+
+
+/**@brief Macro used to concatenate string using delayed macro expansion
+*
+* @note This macro will delay concatenation until the expressions have been resolved
+*
+* @param[in]   lhs   Left hand side in concatenation
+* @param[in]   rhs   Right hand side in concatenation
+*/
+#define STRING_CONCATENATE(lhs, rhs) STRING_CONCATENATE_IMPL(lhs, rhs)
+
+
+// Disable lint-warnings/errors for STATIC_ASSERT
+//lint --emacro(10,STATIC_ASSERT)
+//lint --emacro(18,STATIC_ASSERT)
+//lint --emacro(19,STATIC_ASSERT)
+//lint --emacro(30,STATIC_ASSERT)
+//lint --emacro(37,STATIC_ASSERT)
+//lint --emacro(42,STATIC_ASSERT)
+//lint --emacro(26,STATIC_ASSERT)
+//lint --emacro(102,STATIC_ASSERT)
+//lint --emacro(533,STATIC_ASSERT)
+//lint --emacro(534,STATIC_ASSERT)
+//lint --emacro(132,STATIC_ASSERT)
+//lint --emacro(414,STATIC_ASSERT)
+//lint --emacro(578,STATIC_ASSERT)
+//lint --emacro(628,STATIC_ASSERT)
+//lint --emacro(648,STATIC_ASSERT)
+//lint --emacro(830,STATIC_ASSERT)
+
+
+/**@brief Macro for doing static (i.e. compile time) assertion.
+*
+* @note If the EXPR isn't resolvable, then the error message won't be shown.
+*
+* @note The output of STATIC_ASSERT_MSG will be different across different compilers.
+*
+* @param[in] EXPR Constant expression to be verified.
+*/
+#if defined ( __COUNTER__ )
+
+#define STATIC_ASSERT(EXPR) \
+    ;enum { STRING_CONCATENATE(static_assert_, __COUNTER__) = 1/(!!(EXPR)) }
+
 #else
-#define STATIC_ASSERT(EXPR) typedef char static_assert_failed[(EXPR) ? 1 : -1]
+
+#define STATIC_ASSERT(EXPR) \
+    ;enum { STRING_CONCATENATE(assert_line_, __LINE__) = 1/(!!(EXPR)) }
+
 #endif
+
 
 
 /**@brief type for holding an encoded (i.e. little endian) 16 bit unsigned integer. */

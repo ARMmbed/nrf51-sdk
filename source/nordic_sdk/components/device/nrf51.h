@@ -1,34 +1,56 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+
+/****************************************************************************************************//**
+ * @file     nrf51.h
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * @brief    CMSIS Cortex-M0 Peripheral Access Layer Header File for
+ *           nrf51 from Nordic Semiconductor.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
+ * @version  V522
+ * @date     15. June 2015
  *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
+ * @note     Generated with SVDConv V2.81d 
+ *           from CMSIS SVD File 'nrf51.xml' Version 522,
  *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
+ * @par      Copyright (c) 2013, Nordic Semiconductor ASA
+ *           All rights reserved.
+ *           
+ *           Redistribution and use in source and binary forms, with or without
+ *           modification, are permitted provided that the following conditions are met:
+ *           
+ *           * Redistributions of source code must retain the above copyright notice, this
+ *           list of conditions and the following disclaimer.
+ *           
+ *           * Redistributions in binary form must reproduce the above copyright notice,
+ *           this list of conditions and the following disclaimer in the documentation
+ *           and/or other materials provided with the distribution.
+ *           
+ *           * Neither the name of Nordic Semiconductor ASA nor the names of its
+ *           contributors may be used to endorse or promote products derived from
+ *           this software without specific prior written permission.
+ *           
+ *           THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *           AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *           IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *           DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ *           FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ *           DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ *           SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *           CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ *           OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *           OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *           
  *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
+ *******************************************************************************************************/
+
+
+
+/** @addtogroup Nordic Semiconductor
+  * @{
+  */
+
+/** @addtogroup nrf51
+  * @{
+  */
 
 #ifndef NRF51_H
 #define NRF51_H
@@ -271,27 +293,6 @@ typedef struct {                                    /*!< MPU Structure          
 
 
 /* ================================================================================ */
-/* ================                       PU                       ================ */
-/* ================================================================================ */
-
-
-/**
-  * @brief Patch unit. (PU)
-  */
-
-typedef struct {                                    /*!< PU Structure                                                          */
-  __I  uint32_t  RESERVED0[448];
-  __IO uint32_t  REPLACEADDR[8];                    /*!< Address of first instruction to replace.                              */
-  __I  uint32_t  RESERVED1[24];
-  __IO uint32_t  PATCHADDR[8];                      /*!< Relative address of patch instructions.                               */
-  __I  uint32_t  RESERVED2[24];
-  __IO uint32_t  PATCHEN;                           /*!< Patch enable register.                                                */
-  __IO uint32_t  PATCHENSET;                        /*!< Patch enable register.                                                */
-  __IO uint32_t  PATCHENCLR;                        /*!< Patch disable register.                                               */
-} NRF_PU_Type;
-
-
-/* ================================================================================ */
 /* ================                      AMLI                      ================ */
 /* ================================================================================ */
 
@@ -344,11 +345,11 @@ typedef struct {                                    /*!< RADIO Structure        
   __IO uint32_t  INTENCLR;                          /*!< Interrupt enable clear register.                                      */
   __I  uint32_t  RESERVED4[61];
   __I  uint32_t  CRCSTATUS;                         /*!< CRC status of received packet.                                        */
-  __I  uint32_t  CD;                                /*!< Carrier detect.                                                       */
+  __I  uint32_t  RESERVED5;
   __I  uint32_t  RXMATCH;                           /*!< Received address.                                                     */
   __I  uint32_t  RXCRC;                             /*!< Received CRC.                                                         */
   __I  uint32_t  DAI;                               /*!< Device address match index.                                           */
-  __I  uint32_t  RESERVED5[60];
+  __I  uint32_t  RESERVED6[60];
   __IO uint32_t  PACKETPTR;                         /*!< Packet pointer. Decision point: START task.                           */
   __IO uint32_t  FREQUENCY;                         /*!< Frequency.                                                            */
   __IO uint32_t  TXPOWER;                           /*!< Output power.                                                         */
@@ -367,22 +368,22 @@ typedef struct {                                    /*!< RADIO Structure        
   __IO uint32_t  TEST;                              /*!< Test features enable register.                                        */
   __IO uint32_t  TIFS;                              /*!< Inter Frame Spacing in microseconds.                                  */
   __I  uint32_t  RSSISAMPLE;                        /*!< RSSI sample.                                                          */
-  __I  uint32_t  RESERVED6;
+  __I  uint32_t  RESERVED7;
   __I  uint32_t  STATE;                             /*!< Current radio state.                                                  */
   __IO uint32_t  DATAWHITEIV;                       /*!< Data whitening initial value.                                         */
-  __I  uint32_t  RESERVED7[2];
+  __I  uint32_t  RESERVED8[2];
   __IO uint32_t  BCC;                               /*!< Bit counter compare.                                                  */
-  __I  uint32_t  RESERVED8[39];
+  __I  uint32_t  RESERVED9[39];
   __IO uint32_t  DAB[8];                            /*!< Device address base segment.                                          */
   __IO uint32_t  DAP[8];                            /*!< Device address prefix.                                                */
   __IO uint32_t  DACNF;                             /*!< Device address match configuration.                                   */
-  __I  uint32_t  RESERVED9[56];
+  __I  uint32_t  RESERVED10[56];
   __IO uint32_t  OVERRIDE0;                         /*!< Trim value override register 0.                                       */
   __IO uint32_t  OVERRIDE1;                         /*!< Trim value override register 1.                                       */
   __IO uint32_t  OVERRIDE2;                         /*!< Trim value override register 2.                                       */
   __IO uint32_t  OVERRIDE3;                         /*!< Trim value override register 3.                                       */
   __IO uint32_t  OVERRIDE4;                         /*!< Trim value override register 4.                                       */
-  __I  uint32_t  RESERVED10[561];
+  __I  uint32_t  RESERVED11[561];
   __IO uint32_t  POWER;                             /*!< Peripheral power control.                                             */
 } NRF_RADIO_Type;
 
@@ -413,14 +414,16 @@ typedef struct {                                    /*!< UART Structure         
   __IO uint32_t  EVENTS_ERROR;                      /*!< Error detected.                                                       */
   __I  uint32_t  RESERVED4[7];
   __IO uint32_t  EVENTS_RXTO;                       /*!< Receiver timeout.                                                     */
-  __I  uint32_t  RESERVED5[111];
+  __I  uint32_t  RESERVED5[46];
+  __IO uint32_t  SHORTS;                            /*!< Shortcuts for UART.                                                   */
+  __I  uint32_t  RESERVED6[64];
   __IO uint32_t  INTENSET;                          /*!< Interrupt enable set register.                                        */
   __IO uint32_t  INTENCLR;                          /*!< Interrupt enable clear register.                                      */
-  __I  uint32_t  RESERVED6[93];
+  __I  uint32_t  RESERVED7[93];
   __IO uint32_t  ERRORSRC;                          /*!< Error source. Write error field to 1 to clear error.                  */
-  __I  uint32_t  RESERVED7[31];
+  __I  uint32_t  RESERVED8[31];
   __IO uint32_t  ENABLE;                            /*!< Enable UART and acquire IOs.                                          */
-  __I  uint32_t  RESERVED8;
+  __I  uint32_t  RESERVED9;
   __IO uint32_t  PSELRTS;                           /*!< Pin select for RTS.                                                   */
   __IO uint32_t  PSELTXD;                           /*!< Pin select for TXD.                                                   */
   __IO uint32_t  PSELCTS;                           /*!< Pin select for CTS.                                                   */
@@ -429,11 +432,11 @@ typedef struct {                                    /*!< UART Structure         
                                                          Once read the character is consumed. If read when no character
                                                           available, the UART will stop working.                               */
   __O  uint32_t  TXD;                               /*!< TXD register.                                                         */
-  __I  uint32_t  RESERVED9;
+  __I  uint32_t  RESERVED10;
   __IO uint32_t  BAUDRATE;                          /*!< UART Baudrate.                                                        */
-  __I  uint32_t  RESERVED10[17];
+  __I  uint32_t  RESERVED11[17];
   __IO uint32_t  CONFIG;                            /*!< Configuration of parity and hardware flow control register.           */
-  __I  uint32_t  RESERVED11[675];
+  __I  uint32_t  RESERVED12[675];
   __IO uint32_t  POWER;                             /*!< Peripheral power control.                                             */
 } NRF_UART_Type;
 
@@ -596,32 +599,28 @@ typedef struct {                                    /*!< SPIM Structure         
   __IO uint32_t  EVENTS_STOPPED;                    /*!< SPI transaction has stopped.                                          */
   __I  uint32_t  RESERVED3[2];
   __IO uint32_t  EVENTS_ENDRX;                      /*!< End of RXD buffer reached.                                            */
-  __I  uint32_t  RESERVED4;
-  __IO uint32_t  EVENTS_END;                        /*!< End of RXD buffer and TXD buffer reached.                             */
-  __I  uint32_t  RESERVED5;
+  __I  uint32_t  RESERVED4[3];
   __IO uint32_t  EVENTS_ENDTX;                      /*!< End of TXD buffer reached.                                            */
-  __I  uint32_t  RESERVED6[10];
+  __I  uint32_t  RESERVED5[10];
   __IO uint32_t  EVENTS_STARTED;                    /*!< Transaction started.                                                  */
-  __I  uint32_t  RESERVED7[44];
-  __IO uint32_t  SHORTS;                            /*!< Shortcuts for SPIM.                                                   */
-  __I  uint32_t  RESERVED8[64];
+  __I  uint32_t  RESERVED6[109];
   __IO uint32_t  INTENSET;                          /*!< Interrupt enable set register.                                        */
   __IO uint32_t  INTENCLR;                          /*!< Interrupt enable clear register.                                      */
-  __I  uint32_t  RESERVED9[125];
+  __I  uint32_t  RESERVED7[125];
   __IO uint32_t  ENABLE;                            /*!< Enable SPIM.                                                          */
-  __I  uint32_t  RESERVED10;
+  __I  uint32_t  RESERVED8;
   SPIM_PSEL_Type PSEL;                              /*!< Pin select configuration.                                             */
-  __I  uint32_t  RESERVED11[4];
+  __I  uint32_t  RESERVED9[4];
   __IO uint32_t  FREQUENCY;                         /*!< SPI frequency.                                                        */
-  __I  uint32_t  RESERVED12[3];
+  __I  uint32_t  RESERVED10[3];
   SPIM_RXD_Type RXD;                                /*!< RXD EasyDMA configuration and status.                                 */
-  __I  uint32_t  RESERVED13;
+  __I  uint32_t  RESERVED11;
   SPIM_TXD_Type TXD;                                /*!< TXD EasyDMA configuration and status.                                 */
-  __I  uint32_t  RESERVED14;
+  __I  uint32_t  RESERVED12;
   __IO uint32_t  CONFIG;                            /*!< Configuration register.                                               */
-  __I  uint32_t  RESERVED15[26];
+  __I  uint32_t  RESERVED13[26];
   __IO uint32_t  ORC;                               /*!< Over-read character.                                                  */
-  __I  uint32_t  RESERVED16[654];
+  __I  uint32_t  RESERVED14[654];
   __IO uint32_t  POWER;                             /*!< Peripheral power control.                                             */
 } NRF_SPIM_Type;
 
@@ -1200,7 +1199,6 @@ typedef struct {                                    /*!< GPIO Structure         
 #define NRF_POWER_BASE                  0x40000000UL
 #define NRF_CLOCK_BASE                  0x40000000UL
 #define NRF_MPU_BASE                    0x40000000UL
-#define NRF_PU_BASE                     0x40000000UL
 #define NRF_AMLI_BASE                   0x40000000UL
 #define NRF_RADIO_BASE                  0x40001000UL
 #define NRF_UART0_BASE                  0x40002000UL
@@ -1240,7 +1238,6 @@ typedef struct {                                    /*!< GPIO Structure         
 #define NRF_POWER                       ((NRF_POWER_Type          *) NRF_POWER_BASE)
 #define NRF_CLOCK                       ((NRF_CLOCK_Type          *) NRF_CLOCK_BASE)
 #define NRF_MPU                         ((NRF_MPU_Type            *) NRF_MPU_BASE)
-#define NRF_PU                          ((NRF_PU_Type             *) NRF_PU_BASE)
 #define NRF_AMLI                        ((NRF_AMLI_Type           *) NRF_AMLI_BASE)
 #define NRF_RADIO                       ((NRF_RADIO_Type          *) NRF_RADIO_BASE)
 #define NRF_UART0                       ((NRF_UART_Type           *) NRF_UART0_BASE)
