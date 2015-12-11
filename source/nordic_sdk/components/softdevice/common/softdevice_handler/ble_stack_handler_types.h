@@ -42,6 +42,7 @@
 #ifndef BLE_STACK_HANDLER_TYPES_H__
 #define BLE_STACK_HANDLER_TYPES_H__
 
+#define BLE_STACK_SUPPORT_REQD
 #ifdef BLE_STACK_SUPPORT_REQD
 
 #include <stdlib.h>
