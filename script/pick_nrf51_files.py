@@ -10,7 +10,7 @@ options: --purge   : to delete all existing files and start again
 """.format(os.path.basename(__file__))
 
 # exclude path to avoid confusion over files of the same name
-exclude_path = ["examples", "SVD", "s110", "s120", "s210", "nrf_soc_nosd", "serialization/connectivity",
+exclude_path = ["examples", "SVD", "s110", "s120", "s210", "s310", "nrf_soc_nosd", "serialization/connectivity",
                 'components/libraries/hci/config', 'components/libraries/bootloader_dfu/ble_transport']
 
 def find(name, path):
