@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -37,6 +17,7 @@
 #include "app_util.h"
 #include "nrf_assert.h"
 #include "nrf_soc.h"
+#include "nrf.h"
 
 #if defined(ANT_STACK_SUPPORT_REQD) && defined(BLE_STACK_SUPPORT_REQD)
     #include "ant_interface.h"
@@ -46,6 +27,13 @@
     #include "ble.h"
 #endif
 
+#ifdef NRF51
+#define SOFTDEVICE_EVT_IRQ        SD_EVT_IRQn       /**< SoftDevice Event IRQ number. Used for both protocol events and SoC events. */
+#define SOFTDEVICE_EVT_IRQHandler SD_EVT_IRQHandler
+#elif defined (NRF52)
+#define SOFTDEVICE_EVT_IRQ        SWI2_EGU2_IRQn
+#define SOFTDEVICE_EVT_IRQHandler SWI2_EGU2_IRQHandler
+#endif /* NRF51 */
 
 static softdevice_evt_schedule_func_t m_evt_schedule_func;              /**< Pointer to function for propagating SoftDevice events to the scheduler. */
 
@@ -205,6 +193,10 @@ void intern_softdevice_events_execute(void)
     }
 }
 
+bool softdevice_handler_isEnabled(void)
+{
+    return m_softdevice_enabled;
+}
 
 uint32_t softdevice_handler_init(nrf_clock_lfclksrc_t           clock_source,
                                  void *                         p_ble_evt_buffer,
@@ -238,17 +230,28 @@ uint32_t softdevice_handler_init(nrf_clock_lfclksrc_t           clock_source,
 
     m_evt_schedule_func = evt_schedule_func;
 
+//Enabling FPU for SoftDevice
+#ifdef S132
+    SCB->CPACR |= (3UL << 20) | (3UL << 22);
+    __DSB();
+    __ISB();
+#endif
     // Initialize SoftDevice.
     err_code = sd_softdevice_enable(clock_source, softdevice_assertion_handler);
     if (err_code != NRF_SUCCESS)
     {
         return err_code;
     }
+#ifdef S132
+    SCB->CPACR = 0;
+    __DSB();
+    __ISB();
+#endif
 
     m_softdevice_enabled = true;
 
     // Enable BLE event interrupt (interrupt priority has already been set by the stack).
-    return sd_nvic_EnableIRQ(SWI2_IRQn);
+    return sd_nvic_EnableIRQ(SOFTDEVICE_EVT_IRQ);
 }
 
 
@@ -309,7 +312,7 @@ uint32_t softdevice_sys_evt_handler_set(sys_evt_handler_t sys_evt_handler)
  *
  * @details This function is called whenever an event is ready to be pulled.
  */
-void SWI2_IRQHandler(void)
+void SOFTDEVICE_EVT_IRQHandler(void)
 {
     if (m_evt_schedule_func != NULL)
     {

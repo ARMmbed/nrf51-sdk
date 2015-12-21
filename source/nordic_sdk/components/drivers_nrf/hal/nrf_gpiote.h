@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2015 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 #ifndef NRF_GPIOTE_H__
@@ -43,8 +23,13 @@
 * @ingroup nrf_gpiote
 * @brief GPIOTE abstraction for configuration of channels.
 */
-
+#ifdef NRF51
 #define NUMBER_OF_GPIO_TE 4
+#elif defined NRF52
+#define NUMBER_OF_GPIO_TE 8
+#else
+#error "Chip family not specified"
+#endif
 
  /**
  * @enum nrf_gpiote_polarity_t
@@ -217,6 +202,7 @@ __STATIC_INLINE void nrf_gpiote_task_enable(uint32_t idx);
 __STATIC_INLINE void nrf_gpiote_task_disable(uint32_t idx);
 
 /**@brief Function for configuring a GPIOTE task.
+ * @note  Function is not configuring mode field so task is disabled after this function is called.
  *
  * @param[in]  idx        Task-Event index.
  * @param[in]  pin        Pin associated with event.
@@ -259,6 +245,10 @@ __STATIC_INLINE bool nrf_gpiote_event_is_set(nrf_gpiote_events_t event)
 __STATIC_INLINE void nrf_gpiote_event_clear(nrf_gpiote_events_t event)
 {
     *(uint32_t *)nrf_gpiote_event_addr_get(event) = 0;
+#if __CORTEX_M == 0x04
+    volatile uint32_t dummy = *((volatile uint32_t *)nrf_gpiote_event_addr_get(event));
+    (void)dummy;
+#endif
 }
 
 __STATIC_INLINE uint32_t nrf_gpiote_event_addr_get(nrf_gpiote_events_t event)
@@ -342,8 +332,8 @@ __STATIC_INLINE void nrf_gpiote_task_configure(uint32_t idx, uint32_t pin,
 
 __STATIC_INLINE void nrf_gpiote_task_force(uint32_t idx, nrf_gpiote_outinit_t init_val)
 {
-  NRF_GPIOTE->CONFIG[idx] &= ~GPIOTE_CONFIG_OUTINIT_Msk;
-  NRF_GPIOTE->CONFIG[idx] |= (init_val << GPIOTE_CONFIG_OUTINIT_Pos) & GPIOTE_CONFIG_OUTINIT_Msk;
+    NRF_GPIOTE->CONFIG[idx] = (NRF_GPIOTE->CONFIG[idx] & ~GPIOTE_CONFIG_OUTINIT_Msk) 
+                              | ((init_val << GPIOTE_CONFIG_OUTINIT_Pos) & GPIOTE_CONFIG_OUTINIT_Msk);
 }
 
 __STATIC_INLINE void nrf_gpiote_te_default(uint32_t idx)

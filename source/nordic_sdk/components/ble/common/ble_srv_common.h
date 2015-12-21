@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -56,6 +36,7 @@
 #define BLE_UUID_BLOOD_PRESSURE_SERVICE                          0x1810     /**< Blood Pressure service UUID. */
 #define BLE_UUID_CURRENT_TIME_SERVICE                            0x1805     /**< Current Time service UUID. */
 #define BLE_UUID_CYCLING_SPEED_AND_CADENCE                       0x1816     /**< Cycling Speed and Cadence service UUID. */
+#define BLE_UUID_LOCATION_AND_NAVIGATION_SERVICE                 0x1819     /**< Location and Navigation service UUID. */
 #define BLE_UUID_DEVICE_INFORMATION_SERVICE                      0x180A     /**< Device Information service UUID. */
 #define BLE_UUID_GLUCOSE_SERVICE                                 0x1808     /**< Glucose service UUID. */
 #define BLE_UUID_HEALTH_THERMOMETER_SERVICE                      0x1809     /**< Health Thermometer service UUID. */
@@ -69,6 +50,7 @@
 #define BLE_UUID_RUNNING_SPEED_AND_CADENCE                       0x1814     /**< Running Speed and Cadence service UUID. */
 #define BLE_UUID_SCAN_PARAMETERS_SERVICE                         0x1813     /**< Scan Parameters service UUID. */
 #define BLE_UUID_TX_POWER_SERVICE                                0x1804     /**< TX Power service UUID. */
+#define BLE_UUID_IPSP_SERVICE                                    0x1820     /**< Internet Protocol Support service UUID. */
 /** @} */
 
 /** @defgroup UUID_CHARACTERISTICS Characteristic UUID definitions
@@ -145,6 +127,11 @@
 #define BLE_UUID_SENSOR_LOCATION_CHAR                            0x2A5D     /**< Sensor Location characteristic UUID. */
 #define BLE_UUID_EXTERNAL_REPORT_REF_DESCR                       0x2907     /**< External Report Reference descriptor UUID. */
 #define BLE_UUID_REPORT_REF_DESCR                                0x2908     /**< Report Reference descriptor UUID. */
+#define BLE_UUID_LN_FEATURE_CHAR                                 0x2A6A     /**< Location Navigation Service, Feature characteristic UUID. */
+#define BLE_UUID_LN_POSITION_QUALITY_CHAR                        0x2A69     /**< Location Navigation Service, Position quality UUID. */
+#define BLE_UUID_LN_LOCATION_AND_SPEED_CHAR                      0x2A67     /**< Location Navigation Service, Location and Speed characteristic UUID. */
+#define BLE_UUID_LN_NAVIGATION_CHAR                              0x2A68     /**< Location Navigation Service, Navigation characteristic UUID. */
+#define BLE_UUID_LN_CONTROL_POINT_CHAR                           0x2A6B     /**< Location Navigation Service, Control point characteristic UUID. */
 /** @} */
 
 /** @defgroup ALERT_LEVEL_VALUES Definitions for the Alert Level characteristic values
@@ -160,6 +147,7 @@
 /**@brief Type definition for error handler function that will be called in case of an error in
  *        a service or a service library module. */
 typedef void (*ble_srv_error_handler_t) (uint32_t nrf_error);
+
 
 
 /**@brief Value of a Report Reference descriptor. 
@@ -196,7 +184,7 @@ typedef struct
 
 /**@brief Security settings structure.
  * @details This structure contains the security options needed during initialization of the
- *          service. It can be used when the characteristics contains cccd.
+ *          service. It can be used when the characteristics contains a CCCD.
  */
 typedef struct
 {
@@ -265,6 +253,24 @@ typedef enum
 }security_req_t;
 
 
+/**@brief Characteristic User Descriptor parameters.
+ * @details This structure contains the parameters for User Descriptor.
+ */
+typedef struct
+{
+    uint16_t               max_size;                      /**< Maximum size of the user descriptor*/
+    uint16_t               size;                          /**< Size of the user descriptor*/
+    uint8_t                *p_char_user_desc;             /**< User descriptor content, pointer to a UTF-8 encoded string (non-NULL terminated)*/
+    bool                   is_var_len;                    /**< Indicates if the user descriptor has variable length.*/
+    ble_gatt_char_props_t  char_props;                    /**< user descriptor properties.*/
+    bool                   is_defered_read;               /**< Indicate if deferred read operations are supported.*/
+    bool                   is_defered_write;              /**< Indicate if deferred write operations are supported.*/
+    security_req_t         read_access;                   /**< Security requirement for reading the user descriptor.*/
+    security_req_t         write_access;                  /**< Security requirement for writing the user descriptor.*/
+    bool                   is_value_user;                 /**< Indicate if the content of the characteristic is to be stored in the application (user) or in the stack.*/
+}ble_add_char_user_desc_t;
+
+
 /**@brief Add characteristic parameters structure.
  * @details This structure contains the parameters needed to use the @ref characteristic_add function.
  */
@@ -282,8 +288,30 @@ typedef struct
     security_req_t              read_access;              /**< Security requirement for reading the characteristic value.*/
     security_req_t              write_access;             /**< Security requirement for writing the characteristic value.*/
     security_req_t              cccd_write_access;        /**< Security requirement for writing the characteristic's CCCD.*/
-    bool                        is_value_local;           /**< Indicate if the content of the characteristic is to be stored locally or in the stack.*/
+    bool                        is_value_user;            /**< Indicate if the content of the characteristic is to be stored in the application (user) or in the stack.*/
+    ble_add_char_user_desc_t    *p_user_descr;            /**< Pointer to user descriptor if needed*/
+    ble_gatts_char_pf_t         *p_presentation_format;   /**< Pointer to characteristic format if needed*/
 } ble_add_char_params_t;
+
+
+/**@brief Add descriptor parameters structure.
+ * @details This structure contains the parameters needed to use the @ref descriptor_add function.
+ */
+typedef struct
+{
+    uint16_t       uuid;                     /**< descriptor UUID (16 bits UUIDs).*/
+    uint8_t        uuid_type;                /**< Base UUID. If 0, the Bluetooth SIG UUID will be used. Otherwise, this should be a value returned by @ref sd_ble_uuid_vs_add when adding the base UUID.*/
+    bool           is_defered_read;          /**< Indicate if deferred read operations are supported.*/
+    bool           is_defered_write;         /**< Indicate if deferred write operations are supported.*/
+    bool           is_var_len;               /**< Indicates if the descriptor value has variable length.*/
+    security_req_t read_access;              /**< Security requirement for reading the descriptor value.*/
+    security_req_t write_access;             /**< Security requirement for writing the descriptor value.*/
+    bool           is_value_user;            /**< Indicate if the content of the characteristic is to be stored in the application (user) or in the stack.*/
+    uint16_t       init_len;                 /**< Initial descriptor value length in bytes. */
+    uint16_t       init_offs;                /**< Initial descriptor value offset in bytes. If different from zero, the first init_offs bytes of the attribute value will be left uninitialized. */
+    uint16_t       max_len;                  /**< Maximum descriptor value length in bytes, see @ref BLE_GATTS_ATTR_LENS_MAX for maximum values. */
+    uint8_t*       p_value;                  /**< Pointer to the value of the descriptor*/
+} ble_add_descr_params_t;
 
 
 /**@brief Function for adding a characteristic to a given service. 
@@ -300,6 +328,19 @@ typedef struct
 uint32_t characteristic_add(uint16_t                   service_handle,
                             ble_add_char_params_t *    p_char_props,
                             ble_gatts_char_handles_t * p_char_handle);
+
+
+/**@brief Function for adding a characteristic's descriptor to a given characteristic.
+ *
+ * @param[in]  char_handle    Handle of the characteristic to which the descriptor is to be added, if @ref BLE_GATT_HANDLE_INVALID is used, it will be placed sequentially.
+ * @param[in]  p_descr_props  Information needed to add the descriptor.
+ * @param[out] p_descr_handle Handle of the added descriptor.
+ *
+ * @retval      NRF_SUCCESS If the characteristic was added successfully. Otherwise, an error code is returned.
+ */
+uint32_t descriptor_add(uint16_t                   char_handle,
+                        ble_add_descr_params_t *   p_descr_props,
+                        uint16_t *                 p_descr_handle);
 
 
 #endif // BLE_SRV_COMMON_H__

@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2013 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -45,7 +25,13 @@
 #define INVALID_OPCODE             0x00                                /**< Invalid op code identifier. */
 #define SOC_MAX_WRITE_SIZE         PSTORAGE_FLASH_PAGE_SIZE            /**< Maximum write size allowed for a single call to \ref sd_flash_write as specified in the SoC API. */
 #define RAW_MODE_APP_ID            (PSTORAGE_NUM_OF_PAGES + 1)         /**< Application id for raw mode. */
+
+#if defined(NRF52)
+#define SD_CMD_MAX_TRIES           1000                                /**< Number of times to try a softdevice flash operatoion, specific for nRF52 to account for longest time of flash page erase*/
+#else
 #define SD_CMD_MAX_TRIES           3                                   /**< Number of times to try a softdevice flash operation when the @ref NRF_EVT_FLASH_OPERATION_ERROR sys_evt is received. */
+#endif /* defined(NRF52) */
+
 #define MASK_TAIL_SWAP_DONE        (1 << 0)                            /**< Flag for checking if the tail restore area has been written to swap page. */     
 #define MASK_SINGLE_PAGE_OPERATION (1 << 1)                            /**< Flag for checking if command is a single flash page operation. */
 #define MASK_MODULE_INITIALIZED    (1 << 2)                            /**< Flag for checking if the module has been initialized. */
@@ -1354,8 +1340,10 @@ uint32_t pstorage_register(pstorage_module_param_t * p_module_param,
     m_app_table[m_next_app_instance].block_count = p_module_param->block_count;
 
     // Calculate number of flash pages allocated for the device and adjust next free page address.
+    /*lint -save -e666 */
     const uint32_t page_count = CEIL_DIV((p_module_param->block_size * p_module_param->block_count), 
                                          PSTORAGE_FLASH_PAGE_SIZE);
+    /*lint -restore */
     m_next_page_addr         += page_count * PSTORAGE_FLASH_PAGE_SIZE;
     
     ++m_next_app_instance;

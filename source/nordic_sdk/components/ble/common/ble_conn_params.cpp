@@ -1,32 +1,12 @@
-/*
- * Copyright (c) Nordic Semiconductor ASA
- * All rights reserved.
+/* Copyright (c) 2012 Nordic Semiconductor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * The information contained herein is property of Nordic Semiconductor ASA.
+ * Terms and conditions of usage are described in detail in NORDIC
+ * SEMICONDUCTOR STANDARD SOFTWARE LICENSE AGREEMENT.
  *
- *   1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- *   2. Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
- *
- *   3. Neither the name of Nordic Semiconductor ASA nor the names of other
- *   contributors to this software may be used to endorse or promote products
- *   derived from this software without specific prior written permission.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Licensees are granted free, non-transferable use of the information. NO
+ * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+ * the file.
  *
  */
 
@@ -34,25 +14,17 @@
 #include <stdlib.h>
 #include "nordic_common.h"
 #include "ble_hci.h"
+#include "app_timer.h"
 #include "ble_srv_common.h"
 #include "app_util.h"
 
-#ifdef USE_APP_TIMER
-#include "app_timer.h"
-#else
-#include "mbed.h"
-#endif
 
 static ble_conn_params_init_t m_conn_params_config;     /**< Configuration as specified by the application. */
 static ble_gap_conn_params_t  m_preferred_conn_params;  /**< Connection parameters preferred by the application. */
 static uint8_t                m_update_count;           /**< Number of Connection Parameter Update messages that has currently been sent. */
 static uint16_t               m_conn_handle;            /**< Current connection handle. */
 static ble_gap_conn_params_t  m_current_conn_params;    /**< Connection parameters received in the most recent Connect event. */
-#ifdef USE_APP_TIMER
-static app_timer_id_t         m_conn_params_timer_id;   /**< Connection parameters timer. */
-#else
-static Ticker                 m_conn_params_timer;
-#endif
+APP_TIMER_DEF(m_conn_params_timer_id);                  /**< Connection parameters timer. */
 
 static bool m_change_param = false;
 
@@ -76,16 +48,10 @@ static bool is_conn_params_ok(ble_gap_conn_params_t * p_conn_params)
 }
 
 
-#ifdef USE_APP_TIMER
 static void update_timeout_handler(void * p_context)
 {
     UNUSED_PARAMETER(p_context);
 
-#else /* #if !USE_APP_TIMER */
-static void update_timeout_handler(void)
-{
-    m_conn_params_timer.detach(); /* this is supposed to be a single-shot timer callback */
-#endif /* #if !USE_APP_TIMER */
     if (m_conn_handle != BLE_CONN_HANDLE_INVALID)
     {
         // Check if we have reached the maximum number of attempts
@@ -160,24 +126,15 @@ uint32_t ble_conn_params_init(const ble_conn_params_init_t * p_init)
     m_conn_handle  = BLE_CONN_HANDLE_INVALID;
     m_update_count = 0;
 
-#ifdef USE_APP_TIMER
     return app_timer_create(&m_conn_params_timer_id,
                             APP_TIMER_MODE_SINGLE_SHOT,
                             update_timeout_handler);
-#else
-    return NRF_SUCCESS;
-#endif
 }
 
 
 uint32_t ble_conn_params_stop(void)
 {
-#ifdef USE_APP_TIMER
     return app_timer_stop(m_conn_params_timer_id);
-#else /* #if !USE_APP_TIMER */
-    m_conn_params_timer.detach();
-    return NRF_SUCCESS;
-#endif /* #if !USE_APP_TIMER */
 }
 
 
@@ -186,9 +143,7 @@ static void conn_params_negotiation(void)
     // Start negotiation if the received connection parameters are not acceptable
     if (!is_conn_params_ok(&m_current_conn_params))
     {
-#ifdef USE_APP_TIMER
         uint32_t err_code;
-#endif
         uint32_t timeout_ticks;
 
         if (m_change_param)
@@ -214,15 +169,11 @@ static void conn_params_negotiation(void)
                 timeout_ticks = m_conn_params_config.next_conn_params_update_delay;
             }
 
-#ifdef USE_APP_TIMER
             err_code = app_timer_start(m_conn_params_timer_id, timeout_ticks, NULL);
             if ((err_code != NRF_SUCCESS) && (m_conn_params_config.error_handler != NULL))
             {
                 m_conn_params_config.error_handler(err_code);
             }
-#else
-            m_conn_params_timer.attach(update_timeout_handler, timeout_ticks / 32768);
-#endif
         }
     }
     else
@@ -257,24 +208,18 @@ static void on_connect(ble_evt_t * p_ble_evt)
 
 static void on_disconnect(ble_evt_t * p_ble_evt)
 {
-#ifdef USE_APP_TIMER
     uint32_t err_code;
-#endif
 
     m_conn_handle = BLE_CONN_HANDLE_INVALID;
 
     // Stop timer if running
     m_update_count = 0; // Connection parameters updates should happen during every connection
 
-#ifdef USE_APP_TIMER
     err_code = app_timer_stop(m_conn_params_timer_id);
     if ((err_code != NRF_SUCCESS) && (m_conn_params_config.error_handler != NULL))
     {
         m_conn_params_config.error_handler(err_code);
     }
-#else
-    m_conn_params_timer.detach();
-#endif
 }
 
 
@@ -297,7 +242,6 @@ static void on_write(ble_evt_t * p_ble_evt)
         }
         else
         {
-#ifdef USE_APP_TIMER
             uint32_t err_code;
 
             // Stop timer if running
@@ -306,9 +250,6 @@ static void on_write(ble_evt_t * p_ble_evt)
             {
                 m_conn_params_config.error_handler(err_code);
             }
-#else /* #if !USE_APP_TIMER */
-            m_conn_params_timer.detach();
-#endif /* #if !USE_APP_TIMER */
         }
     }
 }
