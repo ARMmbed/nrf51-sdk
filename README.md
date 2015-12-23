@@ -1,5 +1,5 @@
 # nrf51-sdk
-Module to contain files provided by the nordic nRF51 SDK. The latest version of this module uses files from Nordic SDK 9.0.0. The files are extracted from [here](https://developer.nordicsemi.com/nRF51_SDK/nRF51_SDK_v9.x.x/nRF51_SDK_9.0.0_2e23562.zip).
+Module to contain files provided by the nordic nRF51 SDK. The latest version of this module uses files from Nordic SDK 10.0.0. The files are extracted from [here](https://developer.nordicsemi.com/nRF5_SDK/nRF51_SDK_v10.x.x/nRF51_SDK_10.0.0_dc26b5e.zip).
 
 ## Changes made to Nordic files
 The files are kept the same as much as possible to the Nordic SDK. Modifications are made in order to integrate with mbed.
