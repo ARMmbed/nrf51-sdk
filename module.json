@@ -38,7 +38,6 @@
     "source/nordic_sdk/components/libraries/hci",
     "source/nordic_sdk/components/libraries/scheduler",
     "source/nordic_sdk/components/libraries/timer",
-    "source/nordic_sdk/components/libraries/trace",
     "source/nordic_sdk/components/libraries/util",
     "source/nordic_sdk/components/softdevice/common/softdevice_handler",
     "source/nordic_sdk/components/softdevice/s130/headers",

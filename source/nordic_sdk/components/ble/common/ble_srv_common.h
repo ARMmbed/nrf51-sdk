@@ -35,7 +35,7 @@
  * @defgroup ble_sdk_srv_common Common service definitions
  * @{
  * @ingroup ble_sdk_srv
- * @brief Constants, type definitions and functions that are common to all services.
+ * @brief Constants, type definitions, and functions that are common to all services.
  */
 
 #ifndef BLE_SRV_COMMON_H__
@@ -45,6 +45,7 @@
 #include <stdbool.h>
 #include "ble_types.h"
 #include "app_util.h"
+#include "ble.h"
 #include "ble_gap.h"
 #include "ble_gatt.h"
 
@@ -68,8 +69,6 @@
 #define BLE_UUID_RUNNING_SPEED_AND_CADENCE                       0x1814     /**< Running Speed and Cadence service UUID. */
 #define BLE_UUID_SCAN_PARAMETERS_SERVICE                         0x1813     /**< Scan Parameters service UUID. */
 #define BLE_UUID_TX_POWER_SERVICE                                0x1804     /**< TX Power service UUID. */
-#define BLE_UUID_IPSP_SERVICE                                    0x1820     /**< Internet Protocol Support service UUID. */
-
 /** @} */
 
 /** @defgroup UUID_CHARACTERISTICS Characteristic UUID definitions
@@ -158,19 +157,20 @@
 #define BLE_SRV_ENCODED_REPORT_REF_LEN                           2          /**< The length of an encoded Report Reference Descriptor. */
 #define BLE_CCCD_VALUE_LEN                                       2          /**< The length of a CCCD value. */
 
-/**@brief Type definition for error handler function which will be called in case of an error in
+/**@brief Type definition for error handler function that will be called in case of an error in
  *        a service or a service library module. */
 typedef void (*ble_srv_error_handler_t) (uint32_t nrf_error);
 
+
 /**@brief Value of a Report Reference descriptor. 
  *
- * @details This is mapping information which maps the parent characteristic to the Report ID(s) and
+ * @details This is mapping information that maps the parent characteristic to the Report ID(s) and
  *          Report Type(s) defined within a Report Map characteristic.
  */
 typedef struct
 {
-    uint8_t report_id;                                  /**< Non-zero value if these is more than one instance of the same Report Type */
-    uint8_t report_type;                                /**< Type of Report characteristic @if (SD_S110) (see @ref BLE_HIDS_REPORT_TYPE) @endif */
+    uint8_t report_id;                                  /**< Non-zero value if there is more than one instance of the same Report Type */
+    uint8_t report_type;                                /**< Type of Report characteristic (see @ref BLE_HIDS_REPORT_TYPE) */
 } ble_srv_report_ref_t;
 
 /**@brief UTF-8 string data type.
@@ -182,6 +182,7 @@ typedef struct
     uint16_t  length;                                   /**< String length. */
     uint8_t * p_str;                                    /**< String data. */
 } ble_srv_utf8_str_t;
+
 
 /**@brief Security settings structure.
  * @details This structure contains the security options needed during initialization of the
@@ -195,11 +196,11 @@ typedef struct
 
 /**@brief Security settings structure.
  * @details This structure contains the security options needed during initialization of the
- *          service. It can be used when the charecteristics contains cccd.
+ *          service. It can be used when the characteristics contains cccd.
  */
 typedef struct
 {
-    ble_gap_conn_sec_mode_t cccd_write_perm;
+    ble_gap_conn_sec_mode_t cccd_write_perm;            /**< Write permissions for Client Characteristic Configuration Descriptor. */
     ble_gap_conn_sec_mode_t read_perm;                  /**< Read permissions. */
     ble_gap_conn_sec_mode_t write_perm;                 /**< Write permissions. */
 } ble_srv_cccd_security_mode_t;
@@ -209,7 +210,8 @@ typedef struct
  *
  * @param[in]   p_encoded_data   Buffer where the encoded CCCD is stored.
  *
- * @return      TRUE if notification is enabled, FALSE otherwise.
+ * @retval      TRUE If notification is enabled.
+ * @retval      FALSE Otherwise.
  */
 static __INLINE bool ble_srv_is_notification_enabled(uint8_t * p_encoded_data)
 {
@@ -222,7 +224,8 @@ static __INLINE bool ble_srv_is_notification_enabled(uint8_t * p_encoded_data)
  *
  * @param[in]   p_encoded_data   Buffer where the encoded CCCD is stored.
  *
- * @return      TRUE if indication is enabled, FALSE otherwise.
+ * @retval      TRUE If indication is enabled.
+ * @retval      FALSE Otherwise.
  */
 static __INLINE bool ble_srv_is_indication_enabled(uint8_t * p_encoded_data)
 {
@@ -240,12 +243,64 @@ static __INLINE bool ble_srv_is_indication_enabled(uint8_t * p_encoded_data)
 uint8_t ble_srv_report_ref_encode(uint8_t *                    p_encoded_buffer,
                                   const ble_srv_report_ref_t * p_report_ref);
 
-/**@brief Function for making UTF-8 structure refer to an ASCII string.
+/**@brief Function for making a UTF-8 structure refer to an ASCII string.
  *
  * @param[out]  p_utf8   UTF-8 structure to be set.
  * @param[in]   p_ascii  ASCII string to be referred to.
  */
 void ble_srv_ascii_to_utf8(ble_srv_utf8_str_t * p_utf8, char * p_ascii);
+
+
+/**@brief Security Access enumeration.
+ * @details This enumeration gives the possible requirements for accessing a characteristic value.
+ */
+typedef enum
+{
+    SEC_NO_ACCESS    = 0,            /**< Not possible to access. */
+    SEC_OPEN         = 1,            /**< Access open. */
+    SEC_JUST_WORKS   = 2,            /**< Access possible with 'Just Works' security at least. */
+    SEC_MITM         = 3,            /**< Access possible with 'MITM' security at least. */
+    SEC_SIGNED       = 4,            /**< Access possible with 'signed' security at least. */
+    SEC_SIGNED_MITM  = 5             /**< Access possible with 'signed and MITM' security at least. */
+}security_req_t;
+
+
+/**@brief Add characteristic parameters structure.
+ * @details This structure contains the parameters needed to use the @ref characteristic_add function.
+ */
+typedef struct
+{
+    uint16_t                    uuid;                     /**< Characteristic UUID (16 bits UUIDs).*/
+    uint8_t                     uuid_type;                /**< Base UUID. If 0, the Bluetooth SIG UUID will be used. Otherwise, this should be a value returned by @ref sd_ble_uuid_vs_add when adding the base UUID.*/
+    uint16_t                    max_len;                  /**< Maximum length of the characteristic value.*/
+    uint16_t                    init_len;                 /**< Initial length of the characteristic value.*/
+    uint8_t *                   p_init_value;             /**< Initial encoded value of the characteristic.*/
+    bool                        is_var_len;               /**< Indicates if the characteristic value has variable length.*/
+    ble_gatt_char_props_t       char_props;               /**< Characteristic properties.*/
+    bool                        is_defered_read;          /**< Indicate if deferred read operations are supported.*/
+    bool                        is_defered_write;         /**< Indicate if deferred write operations are supported.*/
+    security_req_t              read_access;              /**< Security requirement for reading the characteristic value.*/
+    security_req_t              write_access;             /**< Security requirement for writing the characteristic value.*/
+    security_req_t              cccd_write_access;        /**< Security requirement for writing the characteristic's CCCD.*/
+    bool                        is_value_local;           /**< Indicate if the content of the characteristic is to be stored locally or in the stack.*/
+} ble_add_char_params_t;
+
+
+/**@brief Function for adding a characteristic to a given service. 
+ *
+ * If no pointer is given for the initial value,
+ * the initial length parameter will be ignored and the initial length will be 0.
+ *
+ * @param[in]  service_handle Handle of the service to which the characteristic is to be added.
+ * @param[in]  p_char_props   Information needed to add the characteristic.
+ * @param[out] p_char_handle  Handle of the added characteristic.
+ *
+ * @retval      NRF_SUCCESS If the characteristic was added successfully. Otherwise, an error code is returned.
+ */
+uint32_t characteristic_add(uint16_t                   service_handle,
+                            ble_add_char_params_t *    p_char_props,
+                            ble_gatts_char_handles_t * p_char_handle);
+
 
 #endif // BLE_SRV_COMMON_H__
 

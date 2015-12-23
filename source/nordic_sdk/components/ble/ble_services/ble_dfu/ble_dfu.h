@@ -111,8 +111,8 @@ typedef enum
  */
 typedef struct
 {
-    uint8_t                      len;                                   /**< Length of the packet received. */
     uint8_t *                    p_data;                                /**< Pointer to the received packet. This will point to a word aligned memory location.*/
+    uint8_t                      len;                                   /**< Length of the packet received. */
 } ble_dfu_pkt_write_t;
 
 /**@brief   Packet receipt notification request structure.
