@@ -110,3 +110,13 @@
 # included from ble_conn_params.c
 	app_timer.h
 
+# bootloader
+	app_timer.c
+	app_timer_appsh.c
+	app_timer_appsh.h
+	bootloader.c
+	bootloader_settings.c
+	bootloader_settings.h
+	dfu_single_bank.c
+	dfu_transport_ble.c
+	boards.h
