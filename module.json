@@ -21,6 +21,9 @@
       "mbed-drivers": "*"
     }
   },
+  "dependencies": {
+    "cmsis-core": "*"
+  },
   "extraIncludes": [
     "source/nordic_sdk/components/ble/ble_radio_notification",
     "source/nordic_sdk/components/ble/ble_services/ble_dfu",
