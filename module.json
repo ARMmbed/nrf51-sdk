@@ -1,6 +1,6 @@
 {
   "name": "nrf51-sdk",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Module to contain files provided by the nordic nRF51 SDK",
   "keywords": [
     "nordic",
