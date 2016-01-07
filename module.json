@@ -27,6 +27,7 @@
     "source/nordic_sdk/components/ble/common",
     "source/nordic_sdk/components/ble/device_manager",
     "source/nordic_sdk/components/ble/device_manager/config",
+    "source/nordic_sdk/components/ble/peer_manager",
     "source/nordic_sdk/components/device",
     "source/nordic_sdk/components/drivers_nrf/ble_flash",
     "source/nordic_sdk/components/drivers_nrf/delay",
