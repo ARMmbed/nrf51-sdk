@@ -32,13 +32,13 @@
 
 /**@file
  *
- * @defgroup nrf_dfu_init Init packet handling in DFU.
+ * @defgroup nrf_dfu_init Init packet handling in DFU
  * @{
  *
  * @brief Device Firmware Update module type and function declaration for init packet handling.
  *
  * @details This header contains basic functionality for performing safety checks on software 
- *          updates for nRF51 based devices. It provides a skeleton for pre-checking an init packet
+ *          updates for \nRFXX based devices. It provides a skeleton for pre-checking an init packet
  *          to ensure the following image is compatible with this device. A safety check should 
  *          always be performed to prevent accidental flashing of unsupported applications or a
  *          wrong combination of application and SoftDevice.
@@ -62,7 +62,7 @@
 #define DFU_INIT_H__
 
 #include <stdint.h>
-#include "nrf51.h"
+#include "nrf.h"
 
 /**@brief Structure contained in an init packet. Contains information on device type, revision, and 
  *        supported SoftDevices.

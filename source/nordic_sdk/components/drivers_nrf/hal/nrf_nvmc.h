@@ -45,10 +45,10 @@
  * @defgroup nrf_nvmc Non-volatile memory controller
  * @{
  * @ingroup nrf_drivers
- * @brief Driver for the nRF51 NVMC peripheral.
+ * @brief Driver for the NVMC peripheral.
  *
  * This driver allows writing to the non-volatile memory (NVM) regions
- * of the nRF51. In order to write to NVM the controller must be powered
+ * of the chip. In order to write to NVM the controller must be powered
  * on and the relevant page must be erased.
  *
  */

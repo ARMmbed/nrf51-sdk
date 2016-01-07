@@ -98,6 +98,14 @@ typedef void (*sys_evt_handler_t) (uint32_t evt_id);
         APP_ERROR_CHECK(ERR_CODE);                                                                 \
     } while (0)
 
+/**
+ * @brief Function for retrieving the information about SD state
+ *
+ * The information about current state of softdevice.
+ * @retval false SD is not initialized and SD commands should not be called.
+ * @retval true  SD is already initialized
+ */
+bool softdevice_handler_isEnabled(void);
 
 /**@brief      Function for initializing the stack handler module.
  *

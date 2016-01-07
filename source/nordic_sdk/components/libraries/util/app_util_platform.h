@@ -44,7 +44,7 @@
 
 #include <stdint.h>
 #include "compiler_abstraction.h"
-#include "nrf51.h"
+#include "nrf.h"
 #ifdef SOFTDEVICE_PRESENT
 #include "nrf_soc.h"
 #include "app_error.h"

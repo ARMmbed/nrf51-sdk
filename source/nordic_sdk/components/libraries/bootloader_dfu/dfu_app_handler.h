@@ -43,7 +43,7 @@
  *          This module handles only the StartDFU packet, which allows a BLE 
  *          application to expose support for the DFU Service.
  *          The actual DFU Service runs in a dedicated environment after a BLE 
- *          disconnect and reset of the nRF51 device. 
+ *          disconnect and reset of the \nRFXX device. 
  *          The host must reconnect and continue the update procedure with 
  *          access to the full DFU Service.
  *

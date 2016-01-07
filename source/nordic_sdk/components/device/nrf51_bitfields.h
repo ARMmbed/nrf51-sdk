@@ -5962,6 +5962,13 @@
 #define SPIS_INTENSET_ACQUIRED_Enabled (1UL) /*!< Interrupt enabled. */
 #define SPIS_INTENSET_ACQUIRED_Set (1UL) /*!< Enable interrupt on write. */
 
+/* Bit 4 : enable interrupt on ENDRX event. */
+#define SPIS_INTENSET_ENDRX_Pos (4UL) /*!< Position of ENDRX field. */
+#define SPIS_INTENSET_ENDRX_Msk (0x1UL << SPIS_INTENSET_ENDRX_Pos) /*!< Bit mask of ENDRX field. */
+#define SPIS_INTENSET_ENDRX_Disabled (0UL) /*!< Interrupt disabled. */
+#define SPIS_INTENSET_ENDRX_Enabled (1UL) /*!< Interrupt enabled. */
+#define SPIS_INTENSET_ENDRX_Set (1UL) /*!< Enable interrupt on write. */
+
 /* Bit 1 : Enable interrupt on END event. */
 #define SPIS_INTENSET_END_Pos (1UL) /*!< Position of END field. */
 #define SPIS_INTENSET_END_Msk (0x1UL << SPIS_INTENSET_END_Pos) /*!< Bit mask of END field. */
@@ -5978,6 +5985,13 @@
 #define SPIS_INTENCLR_ACQUIRED_Disabled (0UL) /*!< Interrupt disabled. */
 #define SPIS_INTENCLR_ACQUIRED_Enabled (1UL) /*!< Interrupt enabled. */
 #define SPIS_INTENCLR_ACQUIRED_Clear (1UL) /*!< Disable interrupt on write. */
+
+/* Bit 4 : Disable interrupt on ENDRX event. */
+#define SPIS_INTENCLR_ENDRX_Pos (4UL) /*!< Position of ENDRX field. */
+#define SPIS_INTENCLR_ENDRX_Msk (0x1UL << SPIS_INTENCLR_ENDRX_Pos) /*!< Bit mask of ENDRX field. */
+#define SPIS_INTENCLR_ENDRX_Disabled (0UL) /*!< Interrupt disabled. */
+#define SPIS_INTENCLR_ENDRX_Enabled (1UL) /*!< Interrupt enabled. */
+#define SPIS_INTENCLR_ENDRX_Clear (1UL) /*!< Disable interrupt on write. */
 
 /* Bit 1 : Disable interrupt on END event. */
 #define SPIS_INTENCLR_END_Pos (1UL) /*!< Position of END field. */

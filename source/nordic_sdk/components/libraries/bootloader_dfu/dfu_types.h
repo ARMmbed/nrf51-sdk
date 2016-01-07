@@ -64,7 +64,7 @@
 
 #define CODE_PAGE_SIZE                  0x0400                                                          /**< Size of a flash codepage. Used for size of the reserved flash space in the bootloader region. Will be runtime checked against NRF_UICR->CODEPAGESIZE to ensure the region is correct. */
 #elif NRF52
-#define BOOTLOADER_REGION_START         0x0003B000                                                      /**< This field should correspond to start address of the bootloader, found in UICR.RESERVED, 0x10001014, register. This value is used for sanity check, so the bootloader will fail immediately if this value differs from runtime value. The value is used to determine max application size for updating. */
+#define BOOTLOADER_REGION_START         0x0007B000                                                      /**< This field should correspond to start address of the bootloader, found in UICR.RESERVED, 0x10001014, register. This value is used for sanity check, so the bootloader will fail immediately if this value differs from runtime value. The value is used to determine max application size for updating. */
 #define BOOTLOADER_SETTINGS_ADDRESS     0x0007F000                                                      /**< The field specifies the page location of the bootloader settings address. */
 #define CODE_PAGE_SIZE                  0x1000                                                          /**< Size of a flash codepage. Used for size of the reserved flash space in the bootloader region. Will be runtime checked against NRF_UICR->CODEPAGESIZE to ensure the region is correct. */
 #else

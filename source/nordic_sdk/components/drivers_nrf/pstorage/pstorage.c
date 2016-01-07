@@ -45,7 +45,13 @@
 #define INVALID_OPCODE             0x00                                /**< Invalid op code identifier. */
 #define SOC_MAX_WRITE_SIZE         PSTORAGE_FLASH_PAGE_SIZE            /**< Maximum write size allowed for a single call to \ref sd_flash_write as specified in the SoC API. */
 #define RAW_MODE_APP_ID            (PSTORAGE_NUM_OF_PAGES + 1)         /**< Application id for raw mode. */
+
+#if defined(NRF52)
+#define SD_CMD_MAX_TRIES           1000                                /**< Number of times to try a softdevice flash operatoion, specific for nRF52 to account for longest time of flash page erase*/
+#else
 #define SD_CMD_MAX_TRIES           3                                   /**< Number of times to try a softdevice flash operation when the @ref NRF_EVT_FLASH_OPERATION_ERROR sys_evt is received. */
+#endif /* defined(NRF52) */
+
 #define MASK_TAIL_SWAP_DONE        (1 << 0)                            /**< Flag for checking if the tail restore area has been written to swap page. */     
 #define MASK_SINGLE_PAGE_OPERATION (1 << 1)                            /**< Flag for checking if command is a single flash page operation. */
 #define MASK_MODULE_INITIALIZED    (1 << 2)                            /**< Flag for checking if the module has been initialized. */
@@ -1354,8 +1360,10 @@ uint32_t pstorage_register(pstorage_module_param_t * p_module_param,
     m_app_table[m_next_app_instance].block_count = p_module_param->block_count;
 
     // Calculate number of flash pages allocated for the device and adjust next free page address.
+    /*lint -save -e666 */
     const uint32_t page_count = CEIL_DIV((p_module_param->block_size * p_module_param->block_count), 
                                          PSTORAGE_FLASH_PAGE_SIZE);
+    /*lint -restore */
     m_next_page_addr         += page_count * PSTORAGE_FLASH_PAGE_SIZE;
     
     ++m_next_app_instance;

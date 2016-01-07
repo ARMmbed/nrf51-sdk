@@ -33,7 +33,7 @@
 #ifndef NRF_TEMP_H__
 #define NRF_TEMP_H__
 
-#include "nrf51.h"
+#include "nrf.h"
 
 /**
 * @defgroup nrf_temperature TEMP (temperature) abstraction

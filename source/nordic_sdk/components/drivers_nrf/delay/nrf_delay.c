@@ -29,13 +29,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+ 
+#include <stdio.h> 
+#include "compiler_abstraction.h"
+#include "nrf.h"
+#include "nrf_delay.h"
 
-#ifndef BLE_ADVDATA_PARSER_H_
-#define BLE_ADVDATA_PARSER_H_
-
-#include "ble_advdata.h"
-
-uint32_t ble_advdata_parse(uint8_t * p_data, uint8_t len, ble_advdata_t * advdata);
-uint32_t ble_advdata_parser_field_find(uint8_t type, uint8_t * p_advdata, uint8_t * len, uint8_t ** pp_field_data);
-
-#endif
+/*lint --e{438} "Variable not used" */
+void nrf_delay_ms(uint32_t volatile number_of_ms)
+{
+    while(number_of_ms != 0)
+    {
+        number_of_ms--;
+        nrf_delay_us(999);
+    }
+}

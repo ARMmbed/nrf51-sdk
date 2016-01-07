@@ -29,6 +29,7 @@
     "source/nordic_sdk/components/ble/device_manager/config",
     "source/nordic_sdk/components/device",
     "source/nordic_sdk/components/drivers_nrf/ble_flash",
+    "source/nordic_sdk/components/drivers_nrf/delay",
     "source/nordic_sdk/components/drivers_nrf/hal",
     "source/nordic_sdk/components/drivers_nrf/pstorage",
     "source/nordic_sdk/components/drivers_nrf/pstorage/config",

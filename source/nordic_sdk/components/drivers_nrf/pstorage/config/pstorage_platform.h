@@ -50,9 +50,15 @@ static __INLINE uint16_t pstorage_flash_page_size()
 #define PSTORAGE_FLASH_PAGE_SIZE     pstorage_flash_page_size()          /**< Size of one flash page. */
 #define PSTORAGE_FLASH_EMPTY_MASK    0xFFFFFFFF                          /**< Bit mask that defines an empty address in flash. */
 
+#ifdef NRF51
+#define BOOTLOADER_ADDRESS           (NRF_UICR->BOOTLOADERADDR)
+#elif defined NRF52
+#define BOOTLOADER_ADDRESS           (PSTORAGE_FLASH_EMPTY_MASK)
+#endif 
+
 static __INLINE uint32_t pstorage_flash_page_end()
 {
-   uint32_t bootloader_addr = NRF_UICR->BOOTLOADERADDR;
+   uint32_t bootloader_addr = BOOTLOADER_ADDRESS;
   
    return ((bootloader_addr != PSTORAGE_FLASH_EMPTY_MASK) ?
            (bootloader_addr/ PSTORAGE_FLASH_PAGE_SIZE) : NRF_FICR->CODESIZE);

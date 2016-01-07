@@ -62,6 +62,7 @@
 #ifndef SDK_ERRORS_H__
 #define SDK_ERRORS_H__
 
+#include <stdint.h>
 #include "nrf_error.h"
 
 /**

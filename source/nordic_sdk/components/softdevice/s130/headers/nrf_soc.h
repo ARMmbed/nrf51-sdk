@@ -43,8 +43,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "nrf_svc.h"
-#include "nrf51.h"
-#include "nrf51_bitfields.h"
+#include "nrf.h"
 #include "nrf_error_soc.h"
 
 /**@addtogroup NRF_SOC_DEFINES Defines

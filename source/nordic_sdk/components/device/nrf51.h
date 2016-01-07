@@ -520,39 +520,41 @@ typedef struct {                                    /*!< SPIS Structure         
   __O  uint32_t  TASKS_RELEASE;                     /*!< Release SPI semaphore.                                                */
   __I  uint32_t  RESERVED1[54];
   __IO uint32_t  EVENTS_END;                        /*!< Granted transaction completed.                                        */
-  __I  uint32_t  RESERVED2[8];
+  __I  uint32_t  RESERVED2[2];
+  __IO uint32_t  EVENTS_ENDRX;                      /*!< End of RXD buffer reached                                             */
+  __I  uint32_t  RESERVED3[5];
   __IO uint32_t  EVENTS_ACQUIRED;                   /*!< Semaphore acquired.                                                   */
-  __I  uint32_t  RESERVED3[53];
+  __I  uint32_t  RESERVED4[53];
   __IO uint32_t  SHORTS;                            /*!< Shortcuts for SPIS.                                                   */
-  __I  uint32_t  RESERVED4[64];
+  __I  uint32_t  RESERVED5[64];
   __IO uint32_t  INTENSET;                          /*!< Interrupt enable set register.                                        */
   __IO uint32_t  INTENCLR;                          /*!< Interrupt enable clear register.                                      */
-  __I  uint32_t  RESERVED5[61];
+  __I  uint32_t  RESERVED6[61];
   __I  uint32_t  SEMSTAT;                           /*!< Semaphore status.                                                     */
-  __I  uint32_t  RESERVED6[15];
+  __I  uint32_t  RESERVED7[15];
   __IO uint32_t  STATUS;                            /*!< Status from last transaction.                                         */
-  __I  uint32_t  RESERVED7[47];
+  __I  uint32_t  RESERVED8[47];
   __IO uint32_t  ENABLE;                            /*!< Enable SPIS.                                                          */
-  __I  uint32_t  RESERVED8;
+  __I  uint32_t  RESERVED9;
   __IO uint32_t  PSELSCK;                           /*!< Pin select for SCK.                                                   */
   __IO uint32_t  PSELMISO;                          /*!< Pin select for MISO.                                                  */
   __IO uint32_t  PSELMOSI;                          /*!< Pin select for MOSI.                                                  */
   __IO uint32_t  PSELCSN;                           /*!< Pin select for CSN.                                                   */
-  __I  uint32_t  RESERVED9[7];
+  __I  uint32_t  RESERVED10[7];
   __IO uint32_t  RXDPTR;                            /*!< RX data pointer.                                                      */
   __IO uint32_t  MAXRX;                             /*!< Maximum number of bytes in the receive buffer.                        */
   __I  uint32_t  AMOUNTRX;                          /*!< Number of bytes received in last granted transaction.                 */
-  __I  uint32_t  RESERVED10;
+  __I  uint32_t  RESERVED11;
   __IO uint32_t  TXDPTR;                            /*!< TX data pointer.                                                      */
   __IO uint32_t  MAXTX;                             /*!< Maximum number of bytes in the transmit buffer.                       */
   __I  uint32_t  AMOUNTTX;                          /*!< Number of bytes transmitted in last granted transaction.              */
-  __I  uint32_t  RESERVED11;
-  __IO uint32_t  CONFIG;                            /*!< Configuration register.                                               */
   __I  uint32_t  RESERVED12;
+  __IO uint32_t  CONFIG;                            /*!< Configuration register.                                               */
+  __I  uint32_t  RESERVED13;
   __IO uint32_t  DEF;                               /*!< Default character.                                                    */
-  __I  uint32_t  RESERVED13[24];
+  __I  uint32_t  RESERVED14[24];
   __IO uint32_t  ORC;                               /*!< Over-read character.                                                  */
-  __I  uint32_t  RESERVED14[654];
+  __I  uint32_t  RESERVED15[654];
   __IO uint32_t  POWER;                             /*!< Peripheral power control.                                             */
 } NRF_SPIS_Type;
 

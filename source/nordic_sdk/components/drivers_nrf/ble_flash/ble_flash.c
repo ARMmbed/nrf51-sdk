@@ -38,7 +38,6 @@
 #include "nordic_common.h"
 #include "nrf_error.h"
 #include "nrf.h"
-#include "nrf51_bitfields.h"
 #include "app_util.h"
 
 

@@ -42,7 +42,7 @@
 #define NRF_SDM_H__
 
 #include "nrf_svc.h"
-#include "nrf51.h"
+#include "nrf.h"
 #include "nrf_soc.h"
 #include "nrf_error_sdm.h"
 

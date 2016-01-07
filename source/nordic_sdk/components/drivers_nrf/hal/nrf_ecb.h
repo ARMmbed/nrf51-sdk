@@ -42,7 +42,7 @@
  * @defgroup nrf_ecb AES ECB encryption
  * @{
  * @ingroup nrf_drivers
- * @brief Driver for the nRF51 AES Electronic Code Book (ECB) peripheral.
+ * @brief Driver for the AES Electronic Code Book (ECB) peripheral.
  *
  * To encrypt and decrypt data, the peripheral must first be powered on
  * using @ref nrf_ecb_init. Next, the key must be set using @ref nrf_ecb_set_key.

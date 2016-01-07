@@ -35,7 +35,7 @@
  * @{
  * @ingroup nrf_wdt
  *
- * @brief Hardware abstraction layer for accessing the watchdog timer (WDT) peripheral.
+ * @brief Hardware access layer for accessing the watchdog timer (WDT) peripheral.
  */
 
 #ifndef NRF_WDT_H__
