@@ -16,6 +16,13 @@
 	source/nordic-sdk/components/ble/common/ble_advdata.h
 	source/nordic-sdk/components/ble/common/ble_advdata_parser.c
 	source/nordic-sdk/components/ble/common/ble_advdata_parser.h
+	source/nordic-sdk/components/ble/peer_manager/id_manager.h
+	source/nordic-sdk/components/ble/peer_manager/id_manager.c
+	source/nordic-sdk/components/ble/peer_manager/peer_manager_types.h
+	source/nordic-sdk/components/ble/peer_manager/ble_gatt_db.h
+	source/nordic-sdk/components/ble/peer_manager/ble_conn_state.h
+	source/nordic-sdk/components/ble/peer_manager/sdk_mapped_flags.h
+	source/nordic-sdk/components/ble/peer_manager/peer_database.h
 # source/nordic-sdk/components/ble/common/ble_conn_params.cpp the file is called
 	source/nordic-sdk/components/ble/common/ble_conn_params.c
 	source/nordic-sdk/components/ble/common/ble_conn_params.h
