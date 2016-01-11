@@ -251,6 +251,13 @@ bool im_address_resolve(ble_gap_addr_t const * p_addr, ble_gap_irk_t const * p_i
  *                          if the irk used in the hash function is the same one used to generate
  *                          the address.
  *                          The array must have a length of 16.
+ *
+ * @note    ====IMPORTANT====
+ *          This is a special modification to the original nRF51 SDK required by the mbed BLE API
+ *          to being able to generate BLE private resolvable addresses. This function is used by
+ *          the BLE API implementation for nRF5xSecurityManager::getAddressFromBondTable() in the
+ *          ble-nrf51822 yotta module.
+ *          =================
  */
 void ah(uint8_t const * p_k, uint8_t const * p_r, uint8_t * p_local_hash);
 
