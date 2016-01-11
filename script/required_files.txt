@@ -107,6 +107,23 @@
 	source/nordic-sdk/components/softdevice/s130/include/nrf_svc.h
 	source/nordic-sdk/components/softdevice/s130/include/softdevice_assert.h
 	source/nordic-sdk/components/drivers_nrf/hal/nrf_wdt.h
+	source/nordic-sdk/components/ble/common/ble_conn_state.c
+    source/nordic-sdk/components/ble/peer_manager/peer_data.c
+    source/nordic-sdk/components/ble/peer_manager/peer_data.h
+    source/nordic-sdk/components/ble/peer_manager/peer_data_storage.c
+    source/nordic-sdk/components/ble/peer_manager/peer_data_storage.h
+    source/nordic-sdk/components/ble/peer_manager/peer_database.c
+    source/nordic-sdk/components/ble/peer_manager/peer_id.c
+    source/nordic-sdk/components/ble/peer_manager/peer_id.h
+    source/nordic-sdk/components/ble/peer_manager/pm_buffer.c
+    source/nordic-sdk/components/ble/peer_manager/pm_buffer.h
+    source/nordic-sdk/components/ble/peer_manager/pm_mutex.c
+    source/nordic-sdk/components/ble/peer_manager/pm_mutex.h
+    source/nordic-sdk/components/libraries/experimental_section_vars/
+    source/nordic-sdk/components/libraries/fds/
+    source/nordic-sdk/components/libraries/fstorage/
+    source/nordic-sdk/components/libraries/util/sdk_mapped_flags.c
+
 
 # from mbed-hal-nrf51822-mcu
 	mbed-hal-nrf51822-mcu/lib/nordic_sdk/components/libraries/crc16/crc16.h
