@@ -254,7 +254,7 @@ bool im_address_resolve(ble_gap_addr_t const * p_addr, ble_gap_irk_t const * p_i
  *
  * @note    ====IMPORTANT====
  *          This is a special modification to the original nRF51 SDK required by the mbed BLE API
- *          to being able to generate BLE private resolvable addresses. This function is used by
+ *          to be able to generate BLE private resolvable addresses. This function is used by
  *          the BLE API implementation for nRF5xSecurityManager::getAddressFromBondTable() in the
  *          ble-nrf51822 yotta module.
  *          =================
