@@ -66,6 +66,11 @@ void SystemCoreClockUpdate(void)
 
 void SystemInit(void)
 {
+#ifdef YOTTA_CFG_HARDWARE_CLOCKS_NRF_HFCLK_32MHZ
+    /* It's possible to use a 32MHz HF crystal */
+    NRF_CLOCK->XTALFREQ = (uint32_t)((CLOCK_XTALFREQ_XTALFREQ_32MHz << CLOCK_XTALFREQ_XTALFREQ_Pos) & CLOCK_XTALFREQ_XTALFREQ_Msk);
+#endif
+
     /* If desired, switch off the unused RAM to lower consumption by the use of RAMON register.
        It can also be done in the application main() function. */
 
