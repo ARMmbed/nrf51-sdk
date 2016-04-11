@@ -4,6 +4,8 @@ Module to contain files provided by the nordic nRF51 SDK. The latest version of 
 ## Changes made to Nordic files
 The files are kept the same as much as possible to the Nordic SDK. Modifications are made in order to integrate with mbed.
     - ble/common/ble_conn_state.c: Preprocessor tests regarding S110, S120 or S130 macro should be replace by TARGET_MCU_NRF51_XXK_SXXX tests
+    - `ble.h` in `source/nordic_sdk/components/softdevice/s130/headers/ble.h` has to be renamed `nrf_ble.h`. All files which include this file should be updated accordingly.
+
 
 ## Porting new versions of Nordic SDK
 A list of files currently requierd by mbed is maintained in [script/required_files.txt](https://github.com/ARMmbed/nrf51-sdk/blob/master/script/required_files.txt). [A python script](https://github.com/ARMmbed/nrf51-sdk/blob/master/script/pick_nrf51_files.py) is written to help porting from nordic sdk releases. **required_files.txt** is parsed to find a list of filenames. The script searches for these filenames in the sdk folder, and copy then into the yotta module mirroring the folder structure in the sdk. **extraIncludes** is automatically added to module.json to allow direct inclusion of noridc headers with just the filename.
