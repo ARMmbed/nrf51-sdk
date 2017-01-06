@@ -82,7 +82,7 @@
  */
 static __INLINE uint32_t fs_flash_page_end_addr()
 {
-    uint32_t const bootloader_addr = NRF_UICR->NRFFW[0];
+    uint32_t const bootloader_addr = NRF_UICR->BOOTLOADERADDR;
     return  ((bootloader_addr != FS_EMPTY_MASK) ?
              bootloader_addr : NRF_FICR->CODESIZE * FS_PAGE_SIZE);
 }
